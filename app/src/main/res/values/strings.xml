@@ -1,0 +1,17 @@
+<resources>
+    <string name="t_app_name">ticktick</string>
+    <string name="e_mail">email</string>
+    <string name="ep_password">password</string>
+    <string name="login_button_text">Login</string>
+    <string name="t_swipe_left_for_register">swipe left for register</string>
+
+    <string name="et_name">name</string>
+    <string name="ep_phone">phone eg: 0541234567</string>
+    <string name="t_register">Register</string>
+    <string name="t_tag">welcome!</string>
+    <string name="ep_password_re">re-enter password</string>
+    <string name="t_swipe_right_for_login">swipe right for register</string>
+
+    <string name="t_greeting">Welcome!</string>
+
+</resources>
