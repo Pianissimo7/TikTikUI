@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
 
-import client.TiktikJavaHttpClient.ClientAndroid;
+import com.example.ticktickui.Client.ClientAndroid;
 import cz.msebera.android.httpclient.Header;
 
 import com.example.ticktickui.global_variables.GlobalVariables;
