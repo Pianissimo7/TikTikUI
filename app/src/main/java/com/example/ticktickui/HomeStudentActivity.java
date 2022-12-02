@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import client.TiktikJavaHttpClient.ClientAndroid;
+import com.example.ticktickui.Client.ClientAndroid;
 import cz.msebera.android.httpclient.Header;
 
 import com.example.ticktickui.global_variables.GlobalVariables;
