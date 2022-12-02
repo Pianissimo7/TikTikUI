@@ -17,6 +17,7 @@ import cz.msebera.android.httpclient.entity.StringEntity;
 import com.google.gson.Gson;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 
 public class ClientAndroid implements ClientInterface{
@@ -59,11 +60,13 @@ public class ClientAndroid implements ClientInterface{
             client.post(this.context, BASE_URL + "/Message/Login", entity, "application/json", new AsyncHttpResponseHandler() {
                 @Override
                 public void onSuccess(int i, Header[] headers, byte[] bytes) {
+                    // TODO implement me
                     System.out.println(new String(bytes, StandardCharsets.UTF_8));
                 }
 
                 @Override
                 public void onFailure(int i, Header[] headers, byte[] bytes, Throwable throwable) {
+                    // TODO implement me
                     System.out.println(new String(bytes, StandardCharsets.UTF_8));
                 }
             });
@@ -97,12 +100,14 @@ public class ClientAndroid implements ClientInterface{
             client.post(this.context, BASE_URL + "/Message/Disconnect", entity, "application/json", new AsyncHttpResponseHandler() {
                 @Override
                 public void onSuccess(int i, Header[] headers, byte[] bytes) {
+                    // TODO implement me
                     System.out.println("Success");
 //                    System.out.println(new String(bytes, StandardCharsets.UTF_8));
                 }
 
                 @Override
                 public void onFailure(int i, Header[] headers, byte[] bytes, Throwable throwable) {
+                    // TODO implement me
                     System.out.println("Failed");
 //                    System.out.println(new String(bytes, StandardCharsets.UTF_8));
                 }
@@ -137,12 +142,14 @@ public class ClientAndroid implements ClientInterface{
             client.post(this.context, URL, entity, "application/json", new AsyncHttpResponseHandler() {
                 @Override
                 public void onSuccess(int i, Header[] headers, byte[] bytes) {
+                    // TODO implement me
                     System.out.println("Success");
 //                    System.out.println(new String(bytes, StandardCharsets.UTF_8));
                 }
 
                 @Override
                 public void onFailure(int i, Header[] headers, byte[] bytes, Throwable throwable) {
+                    // TODO implement me
 //                    System.out.println(new String(bytes, StandardCharsets.UTF_8));
                     System.out.println("Failed");
 
@@ -171,11 +178,13 @@ public class ClientAndroid implements ClientInterface{
             client.post(this.context, BASE_URL + "/Lesson",entity, "application/json", new AsyncHttpResponseHandler() {
                 @Override
                 public void onSuccess(int i, Header[] headers, byte[] bytes) {
+                    // TODO implement me
                     System.out.println(new String(bytes, StandardCharsets.UTF_8));
                 }
 
                 @Override
                 public void onFailure(int i, Header[] headers, byte[] bytes, Throwable throwable) {
+                    // TODO implement me
                     System.out.println(new String(bytes, StandardCharsets.UTF_8));
                 }
             });
@@ -211,12 +220,14 @@ public class ClientAndroid implements ClientInterface{
         client.get(URL, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int i, Header[] headers, byte[] bytes) {
+                // TODO implement me
                 System.out.println("Success");
                 System.out.println(new String(bytes, StandardCharsets.UTF_8));
             }
 
             @Override
             public void onFailure(int i, Header[] headers, byte[] bytes, Throwable throwable) {
+                // TODO implement me
                 System.out.println("Failed");
                 System.out.println(new String(bytes, StandardCharsets.UTF_8));
             }
@@ -230,17 +241,167 @@ public class ClientAndroid implements ClientInterface{
         client.get(URL, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int i, Header[] headers, byte[] bytes) {
+                // TODO implement me
                 System.out.println("Success");
                 System.out.println(new String(bytes, StandardCharsets.UTF_8));
             }
 
             @Override
             public void onFailure(int i, Header[] headers, byte[] bytes, Throwable throwable) {
+                // TODO implement me
                 System.out.println("Failed");
                 System.out.println(new String(bytes, StandardCharsets.UTF_8));
             }
         });
     }
+    @Override
+    public void DeleteLesson(int LessonId)
+    {
+        String URL = BASE_URL + "/Lesson";
+        client.delete(URL, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                // TODO implement me
+                System.out.println("Success");
+                System.out.println(new String(responseBody, StandardCharsets.UTF_8));
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                // TODO implement me
+                System.out.println("Failed");
+                System.out.println(new String(responseBody, StandardCharsets.UTF_8));
+            }
+        });
+    }
+
+    @Override
+    public void ConnectStudentToTeacher(int StudentId, int TeacherId) {
+        String URL = BASE_URL + "/Student/AddTeacher/" + StudentId + "/" + TeacherId;
+        JsonObject jdata = new JsonObject();
+        try{
+            StringEntity entity = new StringEntity(jdata.toString());
+            client.post(this.context, URL , entity, "application/json", new AsyncHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                    // TODO implement me
+                    System.out.println("Success");
+                    System.out.println(new String(responseBody, StandardCharsets.UTF_8));
+                }
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                    // TODO implement me
+                    System.out.println("Failed");
+                    System.out.println(new String(responseBody, StandardCharsets.UTF_8));
+                }
+            });
+        }
+        catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void DeleteConnection(int StudentId) {
+        String URL = BASE_URL + "/Student/DeleteTeacher/" + StudentId;
+        client.delete(URL, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                // TODO implement me
+                System.out.println("Success");
+                System.out.println(new String(responseBody, StandardCharsets.UTF_8));
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                // TODO implement me
+                System.out.println("Failed");
+                System.out.println(new String(responseBody, StandardCharsets.UTF_8));
+            }
+        });
+    }
+
+    @Override
+    public void GetStudentsByTeacher(int TeacherId) {
+        String URL = BASE_URL + "/Teacher/Students/" + TeacherId;
+        client.post(URL, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                // TODO implement me
+                System.out.println("Success");
+                System.out.println(new String(responseBody, StandardCharsets.UTF_8));
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                // TODO implement me
+                System.out.println("Failed");
+                System.out.println(new String(responseBody, StandardCharsets.UTF_8));
+            }
+        });
+    }
+    @Override
+    public void GetTeacherByStudent(int StudentId)
+    {
+        String URL = BASE_URL + "/Student/Teacher/" + StudentId;
+        client.get(URL, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                // TODO implement me
+                System.out.println("Success");
+                System.out.println(new String(responseBody, StandardCharsets.UTF_8));
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                // TODO implement me
+                System.out.println("Failed");
+                System.out.println(new String(responseBody, StandardCharsets.UTF_8));
+            }
+        });
+    }
+
+    @Override
+    public void GetLessonsByObj(int objId, boolean isTeacher) {
+        String URL = BASE_URL + "/Lesson/" + isTeacher + "/" + objId;
+        client.get(URL, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                // TODO implement me
+                System.out.println("Success");
+                System.out.println(new String(responseBody, StandardCharsets.UTF_8));
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                // TODO implement me
+                System.out.println("Failed");
+                System.out.println(new String(responseBody, StandardCharsets.UTF_8));
+            }
+        });
+    }
+
+    @Override
+    public void GetTeachersByName(String name) {
+        String URL = BASE_URL + "/Teacher/TeacherByName/" + name;
+        client.get(URL, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                // TODO implement me
+                System.out.println("Success");
+                System.out.println(new String(responseBody, StandardCharsets.UTF_8));
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                // TODO implement me
+                System.out.println("Failed");
+                System.out.println(new String(responseBody, StandardCharsets.UTF_8));
+            }
+        });
+    }
+
 
     private JsonObject json_builder(Object obj)
     {
