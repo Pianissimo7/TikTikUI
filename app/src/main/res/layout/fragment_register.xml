@@ -40,7 +40,8 @@
         android:hint="@string/et_name"
         android:inputType="textPersonName"
         android:padding="15dp"
-        android:textSize="15sp" />
+        android:textSize="15sp"
+        tools:text="idan" />
 
     <EditText
         android:id="@+id/ep_phone"
@@ -54,7 +55,8 @@
         android:hint="@string/ep_phone"
         android:inputType="phone"
         android:padding="15dp"
-        android:textSize="15sp" />
+        android:textSize="15sp"
+        tools:text="1111111111" />
 
     <EditText
         android:id="@+id/tea_email"
@@ -68,6 +70,7 @@
         android:hint="@string/e_mail"
         android:inputType="textEmailAddress"
         android:padding="15dp"
+        android:text="idan@gmail.com"
         android:textSize="15sp" />
 
     <EditText
@@ -82,7 +85,8 @@
         android:hint="@string/ep_password"
         android:inputType="textPassword"
         android:padding="15dp"
-        android:textSize="15sp" />
+        android:textSize="15sp"
+        tools:text="123" />
 
     <EditText
         android:id="@+id/et_repassword"
@@ -95,6 +99,7 @@
         android:hint="@string/ep_password_re"
         android:inputType="textPassword"
         android:padding="15dp"
+        android:text="123"
         android:textSize="15sp" />
 
     <LinearLayout
