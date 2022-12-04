@@ -1,11 +1,9 @@
 package com.example.ticktickui;
 
 import static androidx.core.content.ContextCompat.getDrawable;
-import static androidx.core.content.ContextCompat.startActivity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,12 +15,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.List;
 
 public class HourAdapter extends ArrayAdapter<HourEvent>
 {
     Context c;
+
     public HourAdapter(@NonNull Context context, List<HourEvent> hourEvents)
     {
         super(context, 0, hourEvents);
@@ -62,18 +60,16 @@ public class HourAdapter extends ArrayAdapter<HourEvent>
         timeTV.setText(CalendarUtils.formattedShortTime(time));
     }
 
-    private void setEvents(View convertView, ArrayList<Event> events)
-    {
-
-    }
-
     private void setEvent(View view, Event event)
     {
         Button button = (Button) view.findViewById(R.id.button);
-        System.out.println("EVENT: " + ((event == null) ? event : "null"));
-        if (event != null && event.get_pick_up_place() != "") {
-            button.setText("Lesson set!");
+        if (event != null) {
+            button.setText(R.string.lesson_set);
             button.setBackground(getDrawable(c, R.drawable.btn_custom_lesson_set));
+        }
+        else {
+            button.setText(R.string.order_lesson);
+            button.setBackground(getDrawable(c, R.drawable.btn_custom));
         }
     }
 }

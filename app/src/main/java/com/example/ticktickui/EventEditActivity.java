@@ -56,6 +56,5 @@ public class EventEditActivity extends AppCompatActivity
         String eventName = et_pick_up_place.getText().toString();
         Event newEvent = new Event(eventName, CalendarUtils.selectedDate, time);
         Event.eventsList.add(newEvent);
-        finish();
     }
 }

@@ -28,7 +28,7 @@
             android:layout_weight="1"
             android:background="@drawable/btn_custom"
             android:textColor="@android:color/white"
-            android:text="Order a lesson" />
+            android:text="@string/order_lesson"/>
     </LinearLayout>
 
 </LinearLayout>

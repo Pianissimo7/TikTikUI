@@ -17,4 +17,6 @@
     <string name="back"><![CDATA[<-]]></string>
     <string name="forward"><![CDATA[->]]></string>
 
+    <string name="order_lesson">Order a lesson</string>
+    <string name="lesson_set">lesson set!</string>
 </resources>

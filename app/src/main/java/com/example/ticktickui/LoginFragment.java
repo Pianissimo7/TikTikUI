@@ -22,9 +22,6 @@ import cz.msebera.android.httpclient.Header;
 
 public class LoginFragment extends Fragment {
 
-    private static AsyncHttpClient client = new AsyncHttpClient();
-    private static String BASE_URL = "http://10.12.9.46:5231";
-
     public LoginFragment() {
         // Required empty public constructor
     }
@@ -46,14 +43,13 @@ public class LoginFragment extends Fragment {
         btn_Login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (v == btn_Login) {
-                    String email = input_email.getText().toString();
-                    String password = input_password.getText().toString();
 
-                    GlobalVariables.email = email;
+                String email = input_email.getText().toString();
+                String password = input_password.getText().toString();
 
-                    login(email, password);
-                }
+                GlobalVariables.email = email;
+
+                login(email, password);
             }
         });
         // Inflate the layout for this fragment
@@ -71,58 +67,6 @@ public class LoginFragment extends Fragment {
     }
 
     private void login(String email, String password) {
-    }
-    // send a request to the server
-    public void send_request(String type, String request, String[] args) {
-        AsyncHttpResponseHandler handler = new AsyncHttpResponseHandler() {
 
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                // TODO Auto-generated method stub
-                response_handler(request, new String(responseBody, StandardCharsets.UTF_8));
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                // TODO Auto-generated method stub
-                System.out.println(statusCode);
-            }
-
-        };
-        if (type == "get") {
-            client.get(request_builder(request, args), handler);
-        }
-        if (type == "post") {
-            client.post(request_builder(request, args), handler);
-        }
-    }
-    public static String request_builder(String request_type, String[] args) {
-        String request =  BASE_URL;
-        switch (request_type) {
-            case "login":
-                request += "/Message/";
-        }
-        return request;
-    }
-    // handel the response that was returned from the server
-    public void response_handler(String request, String response) {
-        switch (request) {
-            case "Student":
-                switch_to_home_student_activity();
-                break;
-            case "login":
-                try {
-                    JSONObject jsonObject = new JSONObject(response);
-                } catch (JSONException err){
-
-                }
-                // choose what type of homepage to go to
-                /*if (type) {
-                    switch_to_home_student_activity();
-                } else {
-                    switch_to_home_teacher_activity();
-                }*/
-
-        }
     }
 }
