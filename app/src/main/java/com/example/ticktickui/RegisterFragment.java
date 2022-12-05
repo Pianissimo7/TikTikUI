@@ -11,6 +11,9 @@ import android.widget.Switch;
 import android.widget.TextView;
 import java.util.regex.*;
 
+import com.example.ticktickui.Client.ClientAndroid;
+import com.example.ticktickui.Client.Models.Student;
+import com.example.ticktickui.Client.Models.Teacher;
 import com.example.ticktickui.global_variables.GlobalVariables;
 
 /**
@@ -18,9 +21,10 @@ import com.example.ticktickui.global_variables.GlobalVariables;
  */
 public class RegisterFragment extends Fragment {
 
-
-    public RegisterFragment() {
+    private ClientAndroid client;
+    public RegisterFragment(ClientAndroid client) {
         // Required empty public constructor
+        this.client = client;
     }
 
 
@@ -59,28 +63,34 @@ public class RegisterFragment extends Fragment {
                 GlobalVariables.phone = phone;
                 GlobalVariables.type = type;
 
-                if (verify_register(name, phone, email, password, re_password)) {
-                    // choose what type of homepage to go to
-                    if (!type) {
-                        switch_to_home_student_activity();
-                    } else {
-                        switch_to_home_teacher_activity();
-                    }
-                }
+                register(name, phone, email, password, re_password, type);
             }
         });
 
         return view;
     }
-    // switches to the student home page
-    public void switch_to_home_student_activity() {
-        Intent home_student_activity = new Intent(this.getActivity(), HomeStudentActivity.class);
-        startActivity(home_student_activity);
+    public void register_failed()
+    {
+        System.out.println("FUCK MY LIFE");
     }
-    // switches to the teacher home page
-    public void switch_to_home_teacher_activity() {
-        Intent home_teacher_activity = new Intent(this.getActivity(), HomeTeacherActivity.class);
-        startActivity(home_teacher_activity);
+    private void register(String name, String phone, String email, String password, String re_password, boolean type)
+    {
+        if(verify_register(name, phone,email,password,re_password))
+        {
+            if(type)
+            {
+                Teacher teach = new Teacher(name, email, phone, password);
+                client.RegisterUser(teach);
+            }
+            else
+            {
+                Student student = new Student(name, email, phone, password);
+                client.RegisterUser(student);
+            }
+        }
+        else{
+            System.out.println("FUCK");
+        }
     }
     private boolean verify_register(String name, String phone, String email, String password, String re_password) {
         if (name == "") {
@@ -103,4 +113,5 @@ public class RegisterFragment extends Fragment {
         }
         return true;
     }
+
 }

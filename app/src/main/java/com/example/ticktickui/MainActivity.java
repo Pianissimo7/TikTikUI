@@ -6,10 +6,16 @@ import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.view.View;
+
+import com.example.ticktickui.Client.ClientAndroid;
+import com.example.ticktickui.global_variables.GlobalVariables;
 
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity{
+    public LoginFragment loginFragment;
+    public RegisterFragment registerFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,9 +25,15 @@ public class MainActivity extends AppCompatActivity{
         ViewPager viewPager = findViewById(R.id.viewPager);
 
         AuthenticationPagerAdapter pagerAdapter = new AuthenticationPagerAdapter(getSupportFragmentManager());
-        pagerAdapter.addFragmet(new LoginFragment());
-        pagerAdapter.addFragmet(new RegisterFragment());
+        GlobalVariables.client = new ClientAndroid(this);
+        // TODO Refactor this
+        loginFragment = new LoginFragment(GlobalVariables.client);
+        // TODO Refactor this
+        registerFragment = new RegisterFragment(GlobalVariables.client);
+        pagerAdapter.addFragmet(loginFragment);
+        pagerAdapter.addFragmet(registerFragment);
         viewPager.setAdapter(pagerAdapter);
+
     }
 
     static class AuthenticationPagerAdapter extends FragmentPagerAdapter {

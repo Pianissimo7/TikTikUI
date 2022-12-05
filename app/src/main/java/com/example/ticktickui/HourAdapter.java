@@ -14,17 +14,19 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.example.ticktickui.Client.ClientAndroid;
+
 import java.time.LocalTime;
 import java.util.List;
 
 public class HourAdapter extends ArrayAdapter<HourEvent>
 {
     Context c;
-
     public HourAdapter(@NonNull Context context, List<HourEvent> hourEvents)
     {
         super(context, 0, hourEvents);
         c = context;
+
     }
 
     @NonNull

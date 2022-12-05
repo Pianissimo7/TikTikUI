@@ -8,14 +8,19 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.ticktickui.Client.Models.Lesson;
 import com.example.ticktickui.global_variables.GlobalVariables;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.util.Date;
 
 public class EventEditActivity extends AppCompatActivity
 {
     private EditText et_pick_up_place;
-    private TextView Name, Date, Time;
+    private TextView Name, date, Time;
     private LocalTime time;
 
     @Override
@@ -29,7 +34,7 @@ public class EventEditActivity extends AppCompatActivity
         time = LocalTime.of(extra.getInt("hour"), extra.getInt("minute"));
 
         Name.setText(GlobalVariables.name);
-        Date.setText("Date: " + CalendarUtils.formattedDate(CalendarUtils.selectedDate));
+        date.setText("Date: " + CalendarUtils.formattedDate(CalendarUtils.selectedDate));
         Time.setText("Time: " + CalendarUtils.formattedTime(time));
 
 
@@ -47,11 +52,27 @@ public class EventEditActivity extends AppCompatActivity
     {
         Name = findViewById(R.id.t_name);
         et_pick_up_place = findViewById(R.id.et_pick_up_place);
-        Date = findViewById(R.id.eventDateTV);
+        date = findViewById(R.id.eventDateTV);
         Time = findViewById(R.id.eventTimeTV);
     }
 
     public void saveEventAction(View view)
+    {
+        // if teacher
+        if(!GlobalVariables.type)
+        {
+            ZoneId defaultZoneId = ZoneId.systemDefault();
+            //local date + atStartOfDay() + default time zone + toInstant() = Date
+            Date date = Date.from(CalendarUtils.selectedDate.atStartOfDay(defaultZoneId).toInstant());
+            String eventName = et_pick_up_place.getText().toString();
+            Lesson lesson = new Lesson(GlobalVariables.teacher.id, GlobalVariables.user_id, date , eventName);
+            GlobalVariables.client.RegisterLesson(this, lesson);
+        }
+        else{
+            // TODO implement me
+        }
+    }
+    public void setLesson()
     {
         String eventName = et_pick_up_place.getText().toString();
         Event newEvent = new Event(eventName, CalendarUtils.selectedDate, time);

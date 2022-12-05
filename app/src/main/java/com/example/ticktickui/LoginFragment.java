@@ -9,12 +9,15 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.ticktickui.Client.ClientAndroid;
 import com.example.ticktickui.global_variables.GlobalVariables;
 
 public class LoginFragment extends Fragment {
 
-    public LoginFragment() {
+    ClientAndroid client;
+    public LoginFragment(ClientAndroid client) {
         // Required empty public constructor
+        this.client = client;
     }
 
     @Override
@@ -56,8 +59,13 @@ public class LoginFragment extends Fragment {
         Intent home_activity = new Intent(this.getActivity(), HomeTeacherActivity.class);
         startActivity(home_activity);
     }
-
-    private void login(String email, String password) {
-
+    public void notApproved()
+    {
+        System.out.println("fuck");
+    }
+    public void login(String email, String password) {
+        // TODO check email and password for correctness
+        // TODO send a message to the server, ON RESPONSE UPDATE THE VIEW
+        client.LoginUser(email, password);
     }
 }

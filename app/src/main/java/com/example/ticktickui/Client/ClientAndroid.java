@@ -1,9 +1,20 @@
 package com.example.ticktickui.Client;
 
+import static com.example.ticktickui.global_variables.GlobalVariables.teacher;
+
 import android.content.Context;
 
 import com.example.ticktickui.Client.Models.Lesson;
+import com.example.ticktickui.Client.Models.Response;
+import com.example.ticktickui.Client.Models.Response_Student;
+import com.example.ticktickui.Client.Models.Response_Teacher;
 import com.example.ticktickui.Client.Models.Teacher;
+import com.example.ticktickui.EventEditActivity;
+import com.example.ticktickui.LoginFragment;
+import com.example.ticktickui.MainActivity;
+import com.example.ticktickui.RegisterFragment;
+import com.example.ticktickui.global_variables.GlobalVariables;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.loopj.android.http.*;
 
@@ -22,9 +33,13 @@ import java.nio.charset.StandardCharsets;
 
 public class ClientAndroid implements ClientInterface{
     private static AsyncHttpClient client = new AsyncHttpClient();
-    private static String BASE_URL = "http://10.12.9.46:5231"; // Remmember to update IP if changed...
-    private Context context;
+    private static String BASE_URL = "http://192.168.1.241:5231"; // Remmember to update IP if changed...
+//    private static String BASE_URL = "http://localhost:5231"; // Remmember to update IP if changed...
 
+    private Context context;
+    private MainActivity mainActivity;
+
+    public ClientAndroid(){}
     /**
      * To set Context, please use getBaseContext()
      * @param context
@@ -32,6 +47,7 @@ public class ClientAndroid implements ClientInterface{
     public ClientAndroid(Context context)
     {
         this.context = context;
+        this.mainActivity = (MainActivity) context;
         client.addHeader("Content-Type", "application/json");
 
     }
@@ -44,7 +60,7 @@ public class ClientAndroid implements ClientInterface{
      * @param Password
      */
     @Override
-    public void LoginUser(String Email, String Password)
+    public void LoginUser( String Email, String Password)
     {
         JsonObject jdata = new JsonObject();
         /**
@@ -60,14 +76,43 @@ public class ClientAndroid implements ClientInterface{
             client.post(this.context, BASE_URL + "/Message/Login", entity, "application/json", new AsyncHttpResponseHandler() {
                 @Override
                 public void onSuccess(int i, Header[] headers, byte[] bytes) {
-                    // TODO implement me
-                    System.out.println(new String(bytes, StandardCharsets.UTF_8));
+                    String object = new String(bytes, StandardCharsets.UTF_8);
+                    GsonBuilder builder = new GsonBuilder();
+                    Response res = builder.create().fromJson(object, Response.class);
+                    if(!res.approved)
+                        mainActivity.loginFragment.notApproved();
+                    else{
+                        if(res.isTeacher)
+                        {
+                            JsonObject jsonObject =  builder.create().fromJson(object, JsonObject.class);
+                            Teacher teacher = builder.create().fromJson(jsonObject.get("student"), Teacher.class);
+                            GlobalVariables.UpdateFields(
+                                    teacher.Name,
+                                    teacher.Phone,
+                                    teacher.Email,
+                                    teacher.id,
+                                    true);
+                            mainActivity.loginFragment.switch_to_home_teacher_activity();
+                        }
+                        else{
+                            JsonObject jsonObject =  builder.create().fromJson(object, JsonObject.class);
+                            Student student = builder.create().fromJson(jsonObject.get("student"), Student.class);
+                            GlobalVariables.UpdateFields(
+                                    student.name,
+                                    student.phone,
+                                    student.email,
+                                    student.id,
+                                    false);
+                            GlobalVariables.teacher = builder.create().fromJson(jsonObject.get("teacher"), Teacher.class);
+                            mainActivity.loginFragment.switch_to_home_student_activity();
+                        }
+                    }
                 }
 
                 @Override
                 public void onFailure(int i, Header[] headers, byte[] bytes, Throwable throwable) {
                     // TODO implement me
-                    System.out.println(new String(bytes, StandardCharsets.UTF_8));
+                    mainActivity.loginFragment.notApproved();
                 }
             });
         }
@@ -142,17 +187,19 @@ public class ClientAndroid implements ClientInterface{
             client.post(this.context, URL, entity, "application/json", new AsyncHttpResponseHandler() {
                 @Override
                 public void onSuccess(int i, Header[] headers, byte[] bytes) {
-                    // TODO implement me
-                    System.out.println("Success");
-//                    System.out.println(new String(bytes, StandardCharsets.UTF_8));
+                    if(isTeacher) {
+                        Teacher teacher = (Teacher) user;
+                        mainActivity.loginFragment.login(teacher.Email, teacher.Password);
+                    }
+                    else{
+                        Student std = (Student) user;
+                        mainActivity.loginFragment.login(std.email, std.password);
+                    }
                 }
 
                 @Override
                 public void onFailure(int i, Header[] headers, byte[] bytes, Throwable throwable) {
-                    // TODO implement me
-//                    System.out.println(new String(bytes, StandardCharsets.UTF_8));
-                    System.out.println("Failed");
-
+                    mainActivity.registerFragment.register_failed();
                 }
             });
         }
@@ -169,23 +216,23 @@ public class ClientAndroid implements ClientInterface{
      * @param lesson
      */
     @Override
-    public void RegisterLesson(Lesson lesson) {
+    public void RegisterLesson(EventEditActivity activity, Lesson lesson) {
 
         JsonObject jdata = json_builder(lesson);
         try
         {
             StringEntity entity = new StringEntity(jdata.toString());
-            client.post(this.context, BASE_URL + "/Lesson",entity, "application/json", new AsyncHttpResponseHandler() {
+            client.post(this.context, BASE_URL + "/Lesson", entity, "application/json", new AsyncHttpResponseHandler() {
                 @Override
                 public void onSuccess(int i, Header[] headers, byte[] bytes) {
-                    // TODO implement me
                     System.out.println(new String(bytes, StandardCharsets.UTF_8));
+                    activity.setLesson();
                 }
 
                 @Override
                 public void onFailure(int i, Header[] headers, byte[] bytes, Throwable throwable) {
-                    // TODO implement me
-                    System.out.println(new String(bytes, StandardCharsets.UTF_8));
+                    // TODO CHANGE ME
+                    mainActivity.loginFragment.notApproved();
                 }
             });
         }
@@ -193,7 +240,6 @@ public class ClientAndroid implements ClientInterface{
         {
 
         }
-
 
     }
 
