@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -19,15 +18,26 @@
         android:textSize="20sp" />
 
     <TextView
+        android:id="@+id/textView3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="bottom"
+        android:text="@string/cancel_lesson_confirmation"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        tools:ignore="RtlCompat" />
+
+    <TextView
         android:id="@+id/eventDateTV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="20dp"
         android:text="Date"
-        android:textSize="20sp"
         android:textAlignment="center"
-        android:textColor="@color/black"/>
+        android:textColor="@color/black"
+        android:textSize="20sp" />
 
     <TextView
         android:id="@+id/eventTimeTV"
@@ -36,19 +46,21 @@
         android:layout_gravity="center"
         android:layout_marginTop="20dp"
         android:text="Time"
-        android:textSize="20sp"
         android:textAlignment="center"
-        android:textColor="@color/black"/>
-
-    <EditText
-        android:id="@+id/et_pick_up_place"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:ems="10"
-        android:hint="Pick-up place"
-        android:inputType="text"
+        android:textColor="@color/black"
         android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/t_place"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="TextView"
+        android:gravity="bottom"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        tools:ignore="RtlCompat"/>
 
     <Button
         android:id="@+id/b_submit"
@@ -58,7 +70,7 @@
         android:layout_marginTop="20dp"
         android:background="@null"
         android:onClick="saveEventAction"
-        android:text="Save"
+        android:text="@string/cancel_lesson"
         android:textColor="@color/blue"
         android:textSize="20sp"
         android:textStyle="bold" />

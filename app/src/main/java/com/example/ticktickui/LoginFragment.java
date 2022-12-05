@@ -10,15 +10,6 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.ticktickui.global_variables.GlobalVariables;
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.AsyncHttpResponseHandler;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.nio.charset.StandardCharsets;
-
-import cz.msebera.android.httpclient.Header;
 
 public class LoginFragment extends Fragment {
 

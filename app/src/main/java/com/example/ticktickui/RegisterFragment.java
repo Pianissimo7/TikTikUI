@@ -10,7 +10,6 @@ import android.widget.Button;
 import android.widget.Switch;
 import android.widget.TextView;
 import java.util.regex.*;
-import java.util.*;
 
 import com.example.ticktickui.global_variables.GlobalVariables;
 

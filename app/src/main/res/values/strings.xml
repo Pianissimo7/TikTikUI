@@ -19,4 +19,6 @@
 
     <string name="order_lesson">Order a lesson</string>
     <string name="lesson_set">lesson set!</string>
+    <string name="cancel_lesson">Cancel Lesson</string>
+    <string name="cancel_lesson_confirmation">are you sure you want to cancel the lesson:</string>
 </resources>

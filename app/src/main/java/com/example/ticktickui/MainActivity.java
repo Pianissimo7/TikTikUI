@@ -5,7 +5,6 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import java.util.ArrayList;

@@ -8,19 +8,6 @@ public class Event
 {
     public static ArrayList<Event> eventsList = new ArrayList<>();
 
-    public static ArrayList<Event> eventsForDate(LocalDate date)
-    {
-        ArrayList<Event> events = new ArrayList<>();
-
-        for(Event event : eventsList)
-        {
-            if(event.getDate().equals(date))
-                events.add(event);
-        }
-
-        return events;
-    }
-
     public static Event eventForDateAndTime(LocalDate date, LocalTime time)
     {
         for (Event event : eventsList)

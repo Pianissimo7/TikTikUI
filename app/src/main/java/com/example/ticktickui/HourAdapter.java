@@ -43,11 +43,20 @@ public class HourAdapter extends ArrayAdapter<HourEvent>
         btn_set_lesson.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(c, EventEditActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.putExtra("hour", event.time.getHour());
-                intent.putExtra("minute", event.time.getMinute());
-                c.startActivity(intent);
+                if (event.event == null) {
+                    Intent intent = new Intent(c, EventEditActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.putExtra("hour", event.time.getHour());
+                    intent.putExtra("minute", event.time.getMinute());
+                    c.startActivity(intent);
+                }
+                else {
+                    Intent intent = new Intent(c, EventCancelActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.putExtra("hour", event.time.getHour());
+                    intent.putExtra("minute", event.time.getMinute());
+                    c.startActivity(intent);
+                }
             }
         });
 
