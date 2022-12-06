@@ -12,6 +12,7 @@ import com.example.ticktickui.Client.Models.Lesson;
 import com.example.ticktickui.global_variables.GlobalVariables;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
@@ -63,7 +64,7 @@ public class EventEditActivity extends AppCompatActivity
         {
             ZoneId defaultZoneId = ZoneId.systemDefault();
             //local date + atStartOfDay() + default time zone + toInstant() = Date
-            Date date = Date.from(CalendarUtils.selectedDate.atStartOfDay(defaultZoneId).toInstant());
+            LocalDateTime date = LocalDateTime.of(CalendarUtils.selectedDate, time);
             String eventName = et_pick_up_place.getText().toString();
             Lesson lesson = new Lesson(GlobalVariables.teacher.id, GlobalVariables.user_id, date , eventName);
             GlobalVariables.client.RegisterLesson(this, lesson);
@@ -77,5 +78,6 @@ public class EventEditActivity extends AppCompatActivity
         String eventName = et_pick_up_place.getText().toString();
         Event newEvent = new Event(eventName, CalendarUtils.selectedDate, time);
         Event.eventsList.add(newEvent);
+        // TODO refresh the page
     }
 }

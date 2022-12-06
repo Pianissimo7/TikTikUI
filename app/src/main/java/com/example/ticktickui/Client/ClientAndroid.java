@@ -30,10 +30,13 @@ import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
+import java.util.Arrays;
 
 public class ClientAndroid implements ClientInterface{
     private static AsyncHttpClient client = new AsyncHttpClient();
-    private static String BASE_URL = "http://192.168.1.241:5231"; // Remmember to update IP if changed...
+    private static String BASE_URL = "http://10.12.2.75:5231"; // Remmember to update IP if changed...
 //    private static String BASE_URL = "http://localhost:5231"; // Remmember to update IP if changed...
 
     private Context context;
@@ -219,19 +222,23 @@ public class ClientAndroid implements ClientInterface{
     public void RegisterLesson(EventEditActivity activity, Lesson lesson) {
 
         JsonObject jdata = json_builder(lesson);
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String formatted_Date = format.format(lesson.date);
+        formatted_Date = formatted_Date.replace(" ", "T");
+        jdata.addProperty("Date", formatted_Date);
         try
         {
             StringEntity entity = new StringEntity(jdata.toString());
             client.post(this.context, BASE_URL + "/Lesson", entity, "application/json", new AsyncHttpResponseHandler() {
                 @Override
                 public void onSuccess(int i, Header[] headers, byte[] bytes) {
-                    System.out.println(new String(bytes, StandardCharsets.UTF_8));
                     activity.setLesson();
                 }
 
                 @Override
                 public void onFailure(int i, Header[] headers, byte[] bytes, Throwable throwable) {
                     // TODO CHANGE ME
+                    System.out.println(new String(bytes, StandardCharsets.UTF_8));
                     mainActivity.loginFragment.notApproved();
                 }
             });
