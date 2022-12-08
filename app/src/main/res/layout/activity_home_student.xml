@@ -58,13 +58,13 @@
                 app:layout_constraintTop_toBottomOf="@+id/t_name"></Button>
 
             <Button
-                android:id="@+id/cell2"
+                android:id="@+id/b_teachers_list"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="15dp"
                 android:background="@drawable/btn_custom"
                 android:padding="5dp"
-                android:text="TextView"
+                android:text="Teachers"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="@android:color/white"
                 app:layout_constraintStart_toEndOf="@+id/cell1"

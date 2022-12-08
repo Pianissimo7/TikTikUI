@@ -90,9 +90,9 @@ public class ClientAndroid implements ClientInterface{
                             JsonObject jsonObject =  builder.create().fromJson(object, JsonObject.class);
                             Teacher teacher = builder.create().fromJson(jsonObject.get("student"), Teacher.class);
                             GlobalVariables.UpdateFields(
-                                    teacher.Name,
-                                    teacher.Phone,
-                                    teacher.Email,
+                                    teacher.name,
+                                    teacher.phone,
+                                    teacher.email,
                                     teacher.id,
                                     true);
                             mainActivity.loginFragment.switch_to_home_teacher_activity();
@@ -192,7 +192,7 @@ public class ClientAndroid implements ClientInterface{
                 public void onSuccess(int i, Header[] headers, byte[] bytes) {
                     if(isTeacher) {
                         Teacher teacher = (Teacher) user;
-                        mainActivity.loginFragment.login(teacher.Email, teacher.Password);
+                        mainActivity.loginFragment.login(teacher.email, teacher.password);
                     }
                     else{
                         Student std = (Student) user;
@@ -468,10 +468,10 @@ public class ClientAndroid implements ClientInterface{
         }
         else if(obj instanceof Teacher) {
             Teacher teach = (Teacher) obj;
-            jdata.addProperty("Email", teach.Email);
-            jdata.addProperty("Name", teach.Name);
-            jdata.addProperty("Phone", teach.Phone);
-            jdata.addProperty("Password", teach.Password);
+            jdata.addProperty("Email", teach.email);
+            jdata.addProperty("Name", teach.name);
+            jdata.addProperty("Phone", teach.phone);
+            jdata.addProperty("Password", teach.password);
         }
         else if(obj instanceof Lesson)
         {

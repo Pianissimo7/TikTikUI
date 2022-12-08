@@ -14,6 +14,20 @@
         android:theme="@style/AppTheme.NoActionBar"
         tools:targetApi="31">
         <activity
+            android:name=".TeachersListActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".StudentsListActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".EventCancelActivity"
             android:exported="false">
             <meta-data
@@ -36,14 +50,14 @@
         </activity>
         <activity
             android:name=".HomeTeacherActivity"
-            android:exported="false">
+            android:exported="true"> <!-- change this later to false -->
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
             android:name=".HomeStudentActivity"
-            android:exported="false">
+            android:exported="true"> <!-- change this later to false -->
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />

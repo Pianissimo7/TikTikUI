@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".HomeTeacherActivity">
+    tools:context=".HomeStudentActivity">
 
     <TextView
         android:id="@+id/textView2"
@@ -20,11 +20,58 @@
     <TextView
         android:id="@+id/t_name"
         android:layout_width="378dp"
-        android:layout_height="30dp"
+        android:layout_height="27dp"
         android:layout_marginStart="20dp"
         android:layout_marginTop="15dp"
         android:text="teacher"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+    <TableLayout
+        android:id="@+id/tabla_cuerpo"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:visibility="visible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/t_name">
+
+        <TableRow
+            android:id="@+id/tableRow1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/t_name">
+
+            <Button
+                android:id="@+id/b_calendar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_custom"
+                android:fontFamily="@font/roboto_regular"
+                android:padding="5dp"
+                android:text="Calender"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@android:color/white"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/t_name"></Button>
+
+            <Button
+                android:id="@+id/b_teachers_list"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:background="@drawable/btn_custom"
+                android:padding="5dp"
+                android:text="Students"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@android:color/white"
+                app:layout_constraintStart_toEndOf="@+id/cell1"
+                app:layout_constraintTop_toBottomOf="@+id/t_name"></Button>
+
+        </TableRow>
+    </TableLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
