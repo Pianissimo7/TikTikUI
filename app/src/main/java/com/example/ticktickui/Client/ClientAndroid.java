@@ -1,18 +1,13 @@
 package com.example.ticktickui.Client;
 
-import static com.example.ticktickui.global_variables.GlobalVariables.teacher;
-
 import android.content.Context;
+import android.widget.Toast;
 
 import com.example.ticktickui.Client.Models.Lesson;
 import com.example.ticktickui.Client.Models.Response;
-import com.example.ticktickui.Client.Models.Response_Student;
-import com.example.ticktickui.Client.Models.Response_Teacher;
 import com.example.ticktickui.Client.Models.Teacher;
 import com.example.ticktickui.EventEditActivity;
-import com.example.ticktickui.LoginFragment;
 import com.example.ticktickui.MainActivity;
-import com.example.ticktickui.RegisterFragment;
 import com.example.ticktickui.global_variables.GlobalVariables;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
@@ -20,19 +15,11 @@ import com.loopj.android.http.*;
 
 import com.example.ticktickui.Client.Models.Student;
 import cz.msebera.android.httpclient.Header;
-import cz.msebera.android.httpclient.HttpResponse;
-import cz.msebera.android.httpclient.client.ClientProtocolException;
-import cz.msebera.android.httpclient.client.ResponseHandler;
 import cz.msebera.android.httpclient.entity.StringEntity;
 
-import com.google.gson.Gson;
-
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeFormatterBuilder;
-import java.util.Arrays;
 
 public class ClientAndroid implements ClientInterface{
     private static AsyncHttpClient client = new AsyncHttpClient();
@@ -237,9 +224,8 @@ public class ClientAndroid implements ClientInterface{
 
                 @Override
                 public void onFailure(int i, Header[] headers, byte[] bytes, Throwable throwable) {
-                    // TODO CHANGE ME
-                    System.out.println(new String(bytes, StandardCharsets.UTF_8));
-                    mainActivity.loginFragment.notApproved();
+                    /** DOESNT WORK, NO IDEA WHY*/
+                    Toast.makeText(activity.getParent().getApplicationContext(), "Error setting lesson", Toast.LENGTH_LONG).show();
                 }
             });
         }

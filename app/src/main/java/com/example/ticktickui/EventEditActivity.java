@@ -11,12 +11,9 @@ import android.widget.TextView;
 import com.example.ticktickui.Client.Models.Lesson;
 import com.example.ticktickui.global_variables.GlobalVariables;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
-import java.time.ZoneOffset;
-import java.util.Date;
 
 public class EventEditActivity extends AppCompatActivity
 {
@@ -60,7 +57,7 @@ public class EventEditActivity extends AppCompatActivity
     public void saveEventAction(View view)
     {
         // if teacher
-        if(!GlobalVariables.type)
+        if(GlobalVariables.is_teacher)
         {
             ZoneId defaultZoneId = ZoneId.systemDefault();
             //local date + atStartOfDay() + default time zone + toInstant() = Date
@@ -68,9 +65,11 @@ public class EventEditActivity extends AppCompatActivity
             String eventName = et_pick_up_place.getText().toString();
             Lesson lesson = new Lesson(GlobalVariables.teacher.id, GlobalVariables.user_id, date , eventName);
             GlobalVariables.client.RegisterLesson(this, lesson);
+            setLesson();
         }
         else{
             // TODO implement me
+            setLesson();
         }
     }
     public void setLesson()

@@ -13,7 +13,7 @@ public class GlobalVariables {
     public static String email = "default email";
     public static int user_id = -1;
     // TODO change this type to isTeacher, this is isTeacher we checked
-    public static boolean type = true;
+    public static boolean is_teacher = true;
     @SuppressLint("StaticFieldLeak")
     public static ClientAndroid client;
 
@@ -24,7 +24,7 @@ public class GlobalVariables {
         phone = p;
         email = e;
         user_id = u_id;
-        type = t;
+        is_teacher = t;
 
     }
 }

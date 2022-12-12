@@ -1,6 +1,5 @@
 package com.example.ticktickui;
 
-import android.content.Intent;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
@@ -61,7 +60,7 @@ public class RegisterFragment extends Fragment {
                 GlobalVariables.email = email;
                 GlobalVariables.name = name;
                 GlobalVariables.phone = phone;
-                GlobalVariables.type = type;
+                GlobalVariables.is_teacher = type;
 
                 register(name, phone, email, password, re_password, type);
             }
