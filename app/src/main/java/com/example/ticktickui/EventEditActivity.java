@@ -59,17 +59,15 @@ public class EventEditActivity extends AppCompatActivity
         // if teacher
         if(GlobalVariables.is_teacher)
         {
-            ZoneId defaultZoneId = ZoneId.systemDefault();
-            //local date + atStartOfDay() + default time zone + toInstant() = Date
+            // TODO implement me
+//            setLesson();
+        }
+        else{
             LocalDateTime date = LocalDateTime.of(CalendarUtils.selectedDate, time);
             String eventName = et_pick_up_place.getText().toString();
             Lesson lesson = new Lesson(GlobalVariables.teacher.id, GlobalVariables.user_id, date , eventName);
             GlobalVariables.client.RegisterLesson(this, lesson);
-            setLesson();
-        }
-        else{
-            // TODO implement me
-            setLesson();
+//            setLesson();
         }
     }
     public void setLesson()

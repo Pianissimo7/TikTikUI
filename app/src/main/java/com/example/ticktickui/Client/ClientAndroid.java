@@ -23,7 +23,7 @@ import java.time.format.DateTimeFormatter;
 
 public class ClientAndroid implements ClientInterface{
     private static AsyncHttpClient client = new AsyncHttpClient();
-    private static String BASE_URL = "http://10.12.2.75:5231"; // Remmember to update IP if changed...
+    private static String BASE_URL = "http://10.7.3.13:5231"; // Remmember to update IP if changed...
 //    private static String BASE_URL = "http://localhost:5231"; // Remmember to update IP if changed...
 
     private Context context;
@@ -39,7 +39,6 @@ public class ClientAndroid implements ClientInterface{
         this.context = context;
         this.mainActivity = (MainActivity) context;
         client.addHeader("Content-Type", "application/json");
-
     }
 
     /**
@@ -54,7 +53,7 @@ public class ClientAndroid implements ClientInterface{
     {
         JsonObject jdata = new JsonObject();
         /**
-         * example :
+         * example:
          * jdata.addProperty("Email", "mosheCohen@gmail.com");
          *         jdata.addProperty("Password", "123456");
          */
@@ -75,7 +74,7 @@ public class ClientAndroid implements ClientInterface{
                         if(res.isTeacher)
                         {
                             JsonObject jsonObject =  builder.create().fromJson(object, JsonObject.class);
-                            Teacher teacher = builder.create().fromJson(jsonObject.get("student"), Teacher.class);
+                            Teacher teacher = builder.create().fromJson(jsonObject.get("teacher"), Teacher.class);
                             GlobalVariables.UpdateFields(
                                     teacher.name,
                                     teacher.phone,
@@ -102,6 +101,7 @@ public class ClientAndroid implements ClientInterface{
                 @Override
                 public void onFailure(int i, Header[] headers, byte[] bytes, Throwable throwable) {
                     // TODO implement me
+                    System.out.println(new String(bytes, StandardCharsets.UTF_8));
                     mainActivity.loginFragment.notApproved();
                 }
             });
@@ -178,12 +178,14 @@ public class ClientAndroid implements ClientInterface{
                 @Override
                 public void onSuccess(int i, Header[] headers, byte[] bytes) {
                     if(isTeacher) {
-                        Teacher teacher = (Teacher) user;
-                        mainActivity.loginFragment.login(teacher.email, teacher.password);
+//                        Teacher teacher = (Teacher) user;
+                        // mainActivity.loginFragment.login(teacher.email, teacher.password);
+                        System.out.println("Registry was Successfull");
                     }
                     else{
-                        Student std = (Student) user;
-                        mainActivity.loginFragment.login(std.email, std.password);
+//                        Student std = (Student) user;
+                        // mainActivity.loginFragment.login(std.email, std.password);
+                        System.out.println("Registry Successfull");
                     }
                 }
 
