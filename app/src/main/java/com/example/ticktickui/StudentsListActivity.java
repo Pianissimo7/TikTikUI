@@ -8,6 +8,7 @@ import android.widget.SearchView;
 
 import com.example.ticktickui.Client.Models.Student;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -31,7 +32,7 @@ public class StudentsListActivity extends AppCompatActivity implements SearchVie
         ArrayList<Student> arraylist = new ArrayList<Student>(Arrays.asList(temp_students));
 
         // Pass results to ListViewAdapter Class
-        adapter = new StudentsViewAdapter(this, arraylist);
+        adapter = new StudentsViewAdapter(this, arraylist, LocalTime.now());
 
         // Binds the Adapter to the ListView
         list.setAdapter(adapter);

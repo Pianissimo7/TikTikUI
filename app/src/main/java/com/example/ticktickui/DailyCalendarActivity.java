@@ -34,8 +34,12 @@ public class DailyCalendarActivity extends AppCompatActivity
         setContentView(R.layout.activity_daily_calendar);
         initWidgets();
         CalendarUtils.selectedDate = LocalDate.now();
-
-        GlobalVariables.client.GetLessonsByObj(this, GlobalVariables.teacher.id, true);
+        if(!GlobalVariables.is_teacher)
+            GlobalVariables.client.GetLessonsByObj(this, GlobalVariables.teacher.id, true);
+        else
+        {
+            GlobalVariables.client.GetLessonsByObj(this, GlobalVariables.user_id, true);
+        }
     }
 
     private void initWidgets()

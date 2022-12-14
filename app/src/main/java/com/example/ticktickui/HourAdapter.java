@@ -43,25 +43,29 @@ public class HourAdapter extends ArrayAdapter<HourEvent>
         setEvent(convertView, event.event);
 
         Button btn_set_lesson = (Button) convertView.findViewById(R.id.button);
-        btn_set_lesson.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (event.event == null) {
-                    Intent intent = new Intent(c, EventEditActivity.class);
+            btn_set_lesson.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent;
+                    if (event.event == null) {
+                        if(!GlobalVariables.is_teacher) {
+                            intent = new Intent(c, EventEditActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            intent.putExtra("student_id", GlobalVariables.user_id);
+                            intent.putExtra("student_name", GlobalVariables.name);
+                        }
+                        else
+                            intent = new Intent(c, TeacherSetLessonActivity.class);
+                    }
+                    else {
+                        intent = new Intent(c, EventCancelActivity.class);
+                    }
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     intent.putExtra("hour", event.time.getHour());
                     intent.putExtra("minute", event.time.getMinute());
                     c.startActivity(intent);
                 }
-                else {
-                    Intent intent = new Intent(c, EventCancelActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    intent.putExtra("hour", event.time.getHour());
-                    intent.putExtra("minute", event.time.getMinute());
-                    c.startActivity(intent);
-                }
-            }
-        });
+            });
 
         return convertView;
     }

@@ -2,6 +2,7 @@ package com.example.ticktickui;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -20,6 +21,8 @@ public class EventEditActivity extends AppCompatActivity
     private EditText et_pick_up_place;
     private TextView Name, date, Time;
     private LocalTime time;
+    private int student_id;
+    private String student_name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -31,7 +34,10 @@ public class EventEditActivity extends AppCompatActivity
         Bundle extra = getIntent().getExtras();
         time = LocalTime.of(extra.getInt("hour"), extra.getInt("minute"));
 
-        Name.setText(GlobalVariables.name);
+        student_id = extra.getInt("student_id");
+        student_name = extra.getString("student_name");
+
+        Name.setText(student_name);
         date.setText("Date: " + CalendarUtils.formattedDate(CalendarUtils.selectedDate));
         Time.setText("Time: " + CalendarUtils.formattedTime(time));
 
@@ -41,7 +47,12 @@ public class EventEditActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 saveEventAction(v);
-                finish();
+                if (GlobalVariables.is_teacher) {
+                    switch_to_home_teacher_activity();
+                }
+                else {
+                    switch_to_home_student_activity();
+                }
             }
         });
     }
@@ -56,19 +67,22 @@ public class EventEditActivity extends AppCompatActivity
 
     public void saveEventAction(View view)
     {
-        // if teacher
         if(GlobalVariables.is_teacher)
         {
-            // TODO implement me
-//            setLesson();
-        }
-        else{
-            LocalDateTime date = LocalDateTime.of(CalendarUtils.selectedDate, time);
-            String eventName = et_pick_up_place.getText().toString();
-            Lesson lesson = new Lesson(GlobalVariables.teacher.id, GlobalVariables.user_id, date , eventName);
 
-            GlobalVariables.client.RegisterLesson(this, lesson);
         }
+        LocalDateTime date = LocalDateTime.of(CalendarUtils.selectedDate, time);
+        String eventName = et_pick_up_place.getText().toString();
+        Lesson lesson;
+        if(GlobalVariables.is_teacher)
+        {
+            lesson = new Lesson(GlobalVariables.user_id, student_id, date , eventName);
+        }
+        else {
+            lesson = new Lesson(GlobalVariables.teacher.id, student_id, date, eventName);
+        }
+
+        GlobalVariables.client.RegisterLesson(this, lesson);
     }
     public void setLesson()
     {
@@ -76,5 +90,14 @@ public class EventEditActivity extends AppCompatActivity
         Event newEvent = new Event(eventName, CalendarUtils.selectedDate, time);
         Event.eventsList.add(newEvent);
         // TODO refresh the page
+    }
+    public void switch_to_home_student_activity() {
+        Intent home_activity = new Intent(this, HomeStudentActivity.class);
+        startActivity(home_activity);
+    }
+    // switches to the teacher home page
+    public void switch_to_home_teacher_activity() {
+        Intent home_activity = new Intent(this, HomeTeacherActivity.class);
+        startActivity(home_activity);
     }
 }

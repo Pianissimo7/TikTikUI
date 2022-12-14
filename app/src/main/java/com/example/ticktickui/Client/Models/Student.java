@@ -6,6 +6,9 @@ public class Student {
     public String name;
     public String phone;
     public String password;
+
+    public Student(){};
+
     // public Integer teacherid;
     public Student(String Name, String Email, String Phone, String Password)
     {

@@ -12,4 +12,11 @@
         android:text="Test Text"
         android:textSize="30sp" />
 
+    <Button
+        android:id="@+id/b_sign_to_teacher"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="Button" />
+
 </LinearLayout>

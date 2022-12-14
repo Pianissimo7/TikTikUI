@@ -38,12 +38,21 @@ public class MainActivity extends AppCompatActivity{
 
         boolean debug = true;
         if (debug) {
-            GlobalVariables.is_teacher = false;
-            GlobalVariables.teacher = new Teacher();
-            GlobalVariables.teacher.id = 2;
-            GlobalVariables.user_id = 1;
-            Intent intent = new Intent(this, HomeStudentActivity.class);
-            startActivity(intent);
+            boolean test_student = false;
+            if (test_student) {
+                GlobalVariables.is_teacher = false;
+                GlobalVariables.teacher = new Teacher();
+                GlobalVariables.teacher.id = 2;
+                GlobalVariables.user_id = 1;
+                Intent intent = new Intent(this, HomeStudentActivity.class);
+                startActivity(intent);
+            }
+            else {
+                GlobalVariables.is_teacher = true;
+                GlobalVariables.user_id = 2;
+                Intent intent = new Intent(this, HomeTeacherActivity.class);
+                startActivity(intent);
+            }
         }
     }
 

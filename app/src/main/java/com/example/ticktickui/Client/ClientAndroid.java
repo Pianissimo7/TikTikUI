@@ -20,9 +20,11 @@ import cz.msebera.android.httpclient.Header;
 import cz.msebera.android.httpclient.entity.StringEntity;
 
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Array;
 import java.nio.charset.StandardCharsets;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.function.Function;
 
 public class ClientAndroid implements ClientInterface{
@@ -253,7 +255,7 @@ public class ClientAndroid implements ClientInterface{
      * @return
      */
     @Override
-    public void GetAll(Object T) {
+    public void GetAll(Object T, Function<ArrayList<Object>, Integer> callbackSuccess, Function<Integer, Integer> callbackFail) {
         String URL = BASE_URL;
         if(T instanceof Student)
             URL += "/Student";
@@ -265,16 +267,24 @@ public class ClientAndroid implements ClientInterface{
         client.get(URL, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int i, Header[] headers, byte[] bytes) {
-                // TODO implement me
-                System.out.println("Success");
-                System.out.println(new String(bytes, StandardCharsets.UTF_8));
+                String strobject = new String(bytes, StandardCharsets.UTF_8);
+                GsonBuilder builder = new GsonBuilder();
+                if (T instanceof Student) {
+                    Student[] students_arr = builder.create().fromJson(strobject, Student[].class);
+                    ArrayList students = new ArrayList(Arrays.asList(students_arr));
+                    callbackSuccess.apply(students);
+                }
+                else if (T instanceof Teacher) {
+                    Teacher[] teachers_arr = builder.create().fromJson(strobject, Teacher[].class);
+                    ArrayList teachers = new ArrayList(Arrays.asList(teachers_arr));
+                    callbackSuccess.apply(teachers);
+                }
             }
 
             @Override
             public void onFailure(int i, Header[] headers, byte[] bytes, Throwable throwable) {
-                // TODO implement me
-                System.out.println("Failed");
-                System.out.println(new String(bytes, StandardCharsets.UTF_8));
+                System.out.println(i);
+                callbackFail.apply(-1);
             }
         });
     }
@@ -321,7 +331,7 @@ public class ClientAndroid implements ClientInterface{
     }
 
     @Override
-    public void ConnectStudentToTeacher(int StudentId, int TeacherId) {
+    public void ConnectStudentToTeacher(int StudentId, int TeacherId, Function<Integer, Integer> callbackSuccess, Function<Integer, Integer> callbackFailure) {
         String URL = BASE_URL + "/Student/AddTeacher/" + StudentId + "/" + TeacherId;
         JsonObject jdata = new JsonObject();
         try{
@@ -329,16 +339,12 @@ public class ClientAndroid implements ClientInterface{
             client.post(this.context, URL , entity, "application/json", new AsyncHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                    // TODO implement me
-                    System.out.println("Success");
-                    System.out.println(new String(responseBody, StandardCharsets.UTF_8));
+                    callbackSuccess.apply(0);
                 }
 
                 @Override
                 public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                    // TODO implement me
-                    System.out.println("Failed");
-                    System.out.println(new String(responseBody, StandardCharsets.UTF_8));
+                    callbackFailure.apply(-1);
                 }
             });
         }
@@ -368,35 +374,35 @@ public class ClientAndroid implements ClientInterface{
     }
 
     @Override
-    public void GetStudentsByTeacher(int TeacherId) {
+    public void GetStudentsByTeacher(int TeacherId, Function<ArrayList<Student>,Integer> callbackSuccess, Function<Integer,Integer> callbackFailure) {
         String URL = BASE_URL + "/Teacher/Students/" + TeacherId;
-        client.post(URL, new AsyncHttpResponseHandler() {
+        client.get(URL, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                // TODO implement me
-                System.out.println("Success");
-                System.out.println(new String(responseBody, StandardCharsets.UTF_8));
+                String strobject = new String(responseBody, StandardCharsets.UTF_8);
+                GsonBuilder builder = new GsonBuilder();
+                Student[] student_arr =  builder.create().fromJson(strobject, Student[].class);
+                ArrayList<Student> students = new ArrayList<>(Arrays.asList(student_arr));
+                callbackSuccess.apply(students);
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                // TODO implement me
-                System.out.println("Failed");
-                System.out.println(new String(responseBody, StandardCharsets.UTF_8));
+                System.out.println(statusCode);
+                callbackFailure.apply(-1);
             }
         });
     }
     @Override
-    public void GetTeacherByStudent(int StudentId, Function<Integer, Integer> callbackSuccess, Function<Integer, Integer> callbackFail)
+    public void GetTeacherByStudent(int StudentId, Function<ArrayList<Teacher>, Integer> callbackSuccess, Function<Integer, Integer> callbackFail)
     {
         String URL = BASE_URL + "/Student/Teacher/" + StudentId;
         client.get(URL, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 // TODO implement me
-                System.out.println("Success");
+                System.out.println("success!");
                 System.out.println(new String(responseBody, StandardCharsets.UTF_8));
-                callbackSuccess.apply(1);
             }
 
             @Override
@@ -404,7 +410,6 @@ public class ClientAndroid implements ClientInterface{
                 // TODO implement me
                 System.out.println("Failed");
                 System.out.println(new String(responseBody, StandardCharsets.UTF_8));
-                callbackFail.apply(1);
             }
         });
     }

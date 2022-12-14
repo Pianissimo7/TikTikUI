@@ -6,12 +6,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.Toast;
 
+import com.example.ticktickui.Client.Models.Student;
 import com.example.ticktickui.Client.Models.Teacher;
+import com.google.gson.JsonObject;
+
 import static com.example.ticktickui.global_variables.GlobalVariables.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.function.Function;
 
 public class TeachersListActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
 
@@ -22,9 +27,25 @@ public class TeachersListActivity extends AppCompatActivity implements SearchVie
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_teachers_list);
 
-        if(!is_teacher) 
+        if(!is_teacher)
         {
-//            client.GetTeacherByStudent(user_id, (1)->{}, (1)->{});
+            if(teacher == null) {
+                Function<ArrayList<Object>, Integer> onSuccess = (teachers) -> {
+                    ArrayList<Teacher> teachs = new ArrayList<>();
+                    teachers.forEach(t -> teachs.add((Teacher)t));
+                    setAdapter(teachs);
+                    return 0;
+                };
+                Function<Integer, Integer> onFailure = (t) -> {
+                    Toast.makeText(this.getBaseContext(), "FUCK", Toast.LENGTH_LONG).show();
+                    return -1;
+                };
+                client.GetAll(new Teacher(), onSuccess, onFailure);
+            }
+            else
+            {
+                //TODO show existing teacher
+            }
         }
         SearchView search_bar = (SearchView) findViewById(R.id.sv_search_teacher);
         search_bar.setOnQueryTextListener(this);
@@ -48,4 +69,5 @@ public class TeachersListActivity extends AppCompatActivity implements SearchVie
         adapter.filter(text);
         return false;
     }
+
 }
