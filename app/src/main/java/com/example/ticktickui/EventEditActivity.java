@@ -66,8 +66,8 @@ public class EventEditActivity extends AppCompatActivity
             LocalDateTime date = LocalDateTime.of(CalendarUtils.selectedDate, time);
             String eventName = et_pick_up_place.getText().toString();
             Lesson lesson = new Lesson(GlobalVariables.teacher.id, GlobalVariables.user_id, date , eventName);
+
             GlobalVariables.client.RegisterLesson(this, lesson);
-//            setLesson();
         }
     }
     public void setLesson()

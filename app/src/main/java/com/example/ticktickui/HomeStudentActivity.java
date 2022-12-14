@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.ticktickui.Client.Models.Teacher;
 import com.example.ticktickui.global_variables.GlobalVariables;
 
 public class HomeStudentActivity extends AppCompatActivity {

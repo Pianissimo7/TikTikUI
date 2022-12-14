@@ -1,5 +1,6 @@
 package com.example.ticktickui;
 
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
@@ -7,6 +8,7 @@ import android.widget.ListView;
 import android.widget.SearchView;
 
 import com.example.ticktickui.Client.Models.Teacher;
+import static com.example.ticktickui.global_variables.GlobalVariables.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,25 +22,19 @@ public class TeachersListActivity extends AppCompatActivity implements SearchVie
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_teachers_list);
 
-        Teacher[] temp_teachers = new Teacher[5];
-
-        for (int i = 0; i < 5 ; i++) {
-            temp_teachers[i] = new Teacher("test_teacher " + i, "", "", "");
+        if(!is_teacher) 
+        {
+//            client.GetTeacherByStudent(user_id, (1)->{}, (1)->{});
         }
-
-        ListView list = (ListView) findViewById(R.id.lv_teachers_list);
-
-        ArrayList<Teacher> arraylist = new ArrayList<Teacher>(Arrays.asList(temp_teachers));
-
-        // Pass results to ListViewAdapter Class
-        adapter = new TeachersViewAdapter(this, arraylist);
-
-        // Binds the Adapter to the ListView
-        list.setAdapter(adapter);
-
         SearchView search_bar = (SearchView) findViewById(R.id.sv_search_teacher);
         search_bar.setOnQueryTextListener(this);
 
+    }
+    public void setAdapter(ArrayList<Teacher> teachers)
+    {
+        ListView list = (ListView) findViewById(R.id.lv_teachers_list);
+        adapter = new TeachersViewAdapter(this, teachers);
+        list.setAdapter(adapter);
     }
 
     @Override

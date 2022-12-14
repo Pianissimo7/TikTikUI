@@ -5,10 +5,12 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
 import com.example.ticktickui.Client.ClientAndroid;
+import com.example.ticktickui.Client.Models.Teacher;
 import com.example.ticktickui.global_variables.GlobalVariables;
 
 import java.util.ArrayList;
@@ -34,6 +36,15 @@ public class MainActivity extends AppCompatActivity{
         pagerAdapter.addFragmet(registerFragment);
         viewPager.setAdapter(pagerAdapter);
 
+        boolean debug = true;
+        if (debug) {
+            GlobalVariables.is_teacher = false;
+            GlobalVariables.teacher = new Teacher();
+            GlobalVariables.teacher.id = 2;
+            GlobalVariables.user_id = 1;
+            Intent intent = new Intent(this, HomeStudentActivity.class);
+            startActivity(intent);
+        }
     }
 
     static class AuthenticationPagerAdapter extends FragmentPagerAdapter {

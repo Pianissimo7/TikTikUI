@@ -1,11 +1,13 @@
 package com.example.ticktickui.Client;
 
 import com.example.ticktickui.Client.Models.Lesson;
+import com.example.ticktickui.DailyCalendarActivity;
 import com.example.ticktickui.EventEditActivity;
 import com.example.ticktickui.LoginFragment;
 import com.example.ticktickui.RegisterFragment;
 
 import java.lang.reflect.Type;
+import java.util.function.Function;
 
 public interface ClientInterface {
 
@@ -20,8 +22,8 @@ public interface ClientInterface {
     public void ConnectStudentToTeacher(int StudentId, int TeacherId);
     public void DeleteConnection(int StudentId);
     public void GetStudentsByTeacher(int TeacherId);
-    public void GetTeacherByStudent(int StudentId);
-    public void GetLessonsByObj(int objId, boolean isTeacher);
+    public void GetTeacherByStudent(int StudentId, Function<Integer, Integer> callbackSuccess, Function<Integer, Integer> callbackFail);
+    public void GetLessonsByObj(DailyCalendarActivity activity, int objId, boolean isTeacher);
     public void GetTeachersByName(String name);
 
 }

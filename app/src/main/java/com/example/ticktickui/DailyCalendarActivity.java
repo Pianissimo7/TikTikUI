@@ -5,10 +5,15 @@ import static com.example.ticktickui.CalendarUtils.selectedDate;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.ticktickui.Client.Models.Lesson;
+import com.example.ticktickui.global_variables.GlobalVariables;
+
+import java.lang.reflect.Array;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.TextStyle;
@@ -29,6 +34,8 @@ public class DailyCalendarActivity extends AppCompatActivity
         setContentView(R.layout.activity_daily_calendar);
         initWidgets();
         CalendarUtils.selectedDate = LocalDate.now();
+
+        GlobalVariables.client.GetLessonsByObj(this, GlobalVariables.teacher.id, true);
     }
 
     private void initWidgets()
@@ -84,5 +91,14 @@ public class DailyCalendarActivity extends AppCompatActivity
     {
         CalendarUtils.selectedDate = CalendarUtils.selectedDate.plusDays(1);
         setDayView();
+    }
+    public void setLessonList(ArrayList<Lesson> lesson_list) {
+        Event event;
+        for (Lesson lesson : lesson_list) {
+            LocalDate date = lesson.date.toLocalDate();
+            LocalTime time = lesson.date.toLocalTime();
+            event = new Event(lesson.Comment, date, time);
+            Event.eventsList.add(event);
+        }
     }
 }

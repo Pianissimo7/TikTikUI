@@ -15,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.ticktickui.Client.ClientAndroid;
+import com.example.ticktickui.global_variables.GlobalVariables;
 
 import java.time.LocalTime;
 import java.util.List;
@@ -45,7 +46,6 @@ public class HourAdapter extends ArrayAdapter<HourEvent>
         btn_set_lesson.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.out.println(event.event);
                 if (event.event == null) {
                     Intent intent = new Intent(c, EventEditActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

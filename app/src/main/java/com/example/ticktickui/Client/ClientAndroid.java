@@ -6,9 +6,11 @@ import android.widget.Toast;
 import com.example.ticktickui.Client.Models.Lesson;
 import com.example.ticktickui.Client.Models.Response;
 import com.example.ticktickui.Client.Models.Teacher;
+import com.example.ticktickui.DailyCalendarActivity;
 import com.example.ticktickui.EventEditActivity;
 import com.example.ticktickui.MainActivity;
 import com.example.ticktickui.global_variables.GlobalVariables;
+import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.loopj.android.http.*;
@@ -20,10 +22,12 @@ import cz.msebera.android.httpclient.entity.StringEntity;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.function.Function;
 
 public class ClientAndroid implements ClientInterface{
     private static AsyncHttpClient client = new AsyncHttpClient();
-    private static String BASE_URL = "http://10.7.3.13:5231"; // Remmember to update IP if changed...
+    private static String BASE_URL = "http://10.0.0.10:5231"; // Remmember to update IP if changed...
 //    private static String BASE_URL = "http://localhost:5231"; // Remmember to update IP if changed...
 
     private Context context;
@@ -69,9 +73,9 @@ public class ClientAndroid implements ClientInterface{
                     GsonBuilder builder = new GsonBuilder();
                     Response res = builder.create().fromJson(object, Response.class);
                     if(!res.approved)
-                        mainActivity.loginFragment.notApproved();
-                    else{
-                        if(res.isTeacher)
+                        Toast.makeText(mainActivity.getBaseContext(), "wrong email or password", Toast.LENGTH_LONG).show();
+                    else {
+                        if (res.isTeacher)
                         {
                             JsonObject jsonObject =  builder.create().fromJson(object, JsonObject.class);
                             Teacher teacher = builder.create().fromJson(jsonObject.get("teacher"), Teacher.class);
@@ -83,7 +87,7 @@ public class ClientAndroid implements ClientInterface{
                                     true);
                             mainActivity.loginFragment.switch_to_home_teacher_activity();
                         }
-                        else{
+                        else {
                             JsonObject jsonObject =  builder.create().fromJson(object, JsonObject.class);
                             Student student = builder.create().fromJson(jsonObject.get("student"), Student.class);
                             GlobalVariables.UpdateFields(
@@ -100,9 +104,12 @@ public class ClientAndroid implements ClientInterface{
 
                 @Override
                 public void onFailure(int i, Header[] headers, byte[] bytes, Throwable throwable) {
-                    // TODO implement me
-                    System.out.println(new String(bytes, StandardCharsets.UTF_8));
-                    mainActivity.loginFragment.notApproved();
+                    if (i == 404) {
+                        Toast.makeText(mainActivity.getBaseContext(), "wrong enail or password", Toast.LENGTH_LONG).show();
+                    }
+                    else {
+                        Toast.makeText(mainActivity.getBaseContext(), "failed to connect to server", Toast.LENGTH_LONG).show();
+                    }
                 }
             });
         }
@@ -209,7 +216,6 @@ public class ClientAndroid implements ClientInterface{
      */
     @Override
     public void RegisterLesson(EventEditActivity activity, Lesson lesson) {
-
         JsonObject jdata = json_builder(lesson);
         DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         String formatted_Date = format.format(lesson.date);
@@ -226,18 +232,16 @@ public class ClientAndroid implements ClientInterface{
 
                 @Override
                 public void onFailure(int i, Header[] headers, byte[] bytes, Throwable throwable) {
-                    /** DOESNT WORK, NO IDEA WHY*/
-                    Toast.makeText(activity.getParent().getApplicationContext(), "Error setting lesson", Toast.LENGTH_LONG).show();
+                    Toast.makeText(activity.getBaseContext(), "Error setting lesson", Toast.LENGTH_LONG).show();
                 }
             });
         }
         catch (Exception e)
         {
-
+            Toast.makeText(activity.getParent().getApplicationContext(), "Error setting lesson", Toast.LENGTH_LONG).show();
         }
 
     }
-
     /**
      * This is used to get all the objects available from the server
      * which reflect the object's class specified, such as Student,
@@ -383,7 +387,7 @@ public class ClientAndroid implements ClientInterface{
         });
     }
     @Override
-    public void GetTeacherByStudent(int StudentId)
+    public void GetTeacherByStudent(int StudentId, Function<Integer, Integer> callbackSuccess, Function<Integer, Integer> callbackFail)
     {
         String URL = BASE_URL + "/Student/Teacher/" + StudentId;
         client.get(URL, new AsyncHttpResponseHandler() {
@@ -392,6 +396,7 @@ public class ClientAndroid implements ClientInterface{
                 // TODO implement me
                 System.out.println("Success");
                 System.out.println(new String(responseBody, StandardCharsets.UTF_8));
+                callbackSuccess.apply(1);
             }
 
             @Override
@@ -399,19 +404,37 @@ public class ClientAndroid implements ClientInterface{
                 // TODO implement me
                 System.out.println("Failed");
                 System.out.println(new String(responseBody, StandardCharsets.UTF_8));
+                callbackFail.apply(1);
             }
         });
     }
 
     @Override
-    public void GetLessonsByObj(int objId, boolean isTeacher) {
+    public void GetLessonsByObj(DailyCalendarActivity activity, int objId, boolean isTeacher) {
+        System.out.println("" + objId + " " + isTeacher);
         String URL = BASE_URL + "/Lesson/" + isTeacher + "/" + objId;
         client.get(URL, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                // TODO implement me
-                System.out.println("Success");
-                System.out.println(new String(responseBody, StandardCharsets.UTF_8));
+//                System.out.println("Success");
+//                System.out.println(new String(responseBody, StandardCharsets.UTF_8));
+                String strobject = new String(responseBody, StandardCharsets.UTF_8);
+                GsonBuilder builder = new GsonBuilder();
+                JsonObject[] json_objects =  builder.create().fromJson(strobject, JsonObject[].class);
+                ArrayList<Lesson> lessons = new ArrayList<>();
+                for(JsonObject obj : json_objects)
+                {
+                    int teachid = builder.create().fromJson(obj.get("teacherId"), int.class);
+                    int stdid = builder.create().fromJson(obj.get("studentId"), int.class);
+                    String date = builder.create().fromJson(obj.get("date"), String.class);
+                    String comment = builder.create().fromJson(obj.get("comment"), String.class);
+                    Lesson lesson = new Lesson(teachid, stdid, date, comment);
+                    lesson.id = builder.create().fromJson(obj.get("id"), int.class);
+                    lessons.add(lesson);
+                    System.out.println(lesson);
+                }
+                activity.setLessonList(lessons);
+
             }
 
             @Override

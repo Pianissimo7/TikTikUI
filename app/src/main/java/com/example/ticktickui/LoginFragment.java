@@ -59,13 +59,7 @@ public class LoginFragment extends Fragment {
         Intent home_activity = new Intent(this.getActivity(), HomeTeacherActivity.class);
         startActivity(home_activity);
     }
-    public void notApproved()
-    {
-        System.out.println("fuck");
-    }
     public void login(String email, String password) {
-        // TODO check email and password for correctness
-        // TODO send a message to the server, ON RESPONSE UPDATE THE VIEW
         client.LoginUser(email, password);
     }
 }
