@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity{
 
         boolean debug = true;
         if (debug) {
-            boolean test_student = true;
+            boolean test_student = false;
             if (test_student) {
                 GlobalVariables.is_teacher = false;
                 GlobalVariables.teacher = new Teacher();
@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity{
             }
             else {
                 GlobalVariables.is_teacher = true;
-                GlobalVariables.user_id = 2;
+                GlobalVariables.user_id = 1;
                 Intent intent = new Intent(this, HomeTeacherActivity.class);
                 startActivity(intent);
             }
