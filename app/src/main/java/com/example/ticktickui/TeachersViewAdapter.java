@@ -68,6 +68,7 @@ public class TeachersViewAdapter extends BaseAdapter {
         holder.name.setText(Teachers.get(position).name);
         // sign to teacher button functionality
         Button btn_sign_to_teacher = (Button) view.findViewById(R.id.b_sign_to_teacher);
+        btn_sign_to_teacher.setText(new String("Sign to"));
         btn_sign_to_teacher.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -82,7 +83,6 @@ public class TeachersViewAdapter extends BaseAdapter {
                     return -1;
                 };
                 GlobalVariables.client.ConnectStudentToTeacher(GlobalVariables.user_id, Teachers.get(position).id, onSuccess, onFailure);
-
             }
         });
         return view;

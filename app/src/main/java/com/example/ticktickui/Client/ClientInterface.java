@@ -25,7 +25,7 @@ public interface ClientInterface {
     public void ConnectStudentToTeacher(int StudentId, int TeacherId, Function<Integer, Integer> callbackSuccess, Function<Integer, Integer> callbackFailure);
     public void DeleteConnection(int StudentId);
     public void GetStudentsByTeacher(int TeacherId, Function<ArrayList<Student>,Integer> callbackSuccess, Function<Integer,Integer> callbackFailure);
-    public void GetTeacherByStudent(int StudentId, Function<ArrayList<Teacher>, Integer> callbackSuccess, Function<Integer, Integer> callbackFail);
+    public void GetTeacherByStudent(int StudentId, Function<Teacher, Integer> callbackSuccess, Function<Integer, Integer> callbackFail);
     public void GetLessonsByObj(DailyCalendarActivity activity, int objId, boolean isTeacher);
     public void GetTeachersByName(String name);
 

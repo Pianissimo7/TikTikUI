@@ -29,23 +29,17 @@ public class TeachersListActivity extends AppCompatActivity implements SearchVie
 
         if(!is_teacher)
         {
-            if(teacher == null) {
-                Function<ArrayList<Object>, Integer> onSuccess = (teachers) -> {
-                    ArrayList<Teacher> teachs = new ArrayList<>();
-                    teachers.forEach(t -> teachs.add((Teacher)t));
-                    setAdapter(teachs);
-                    return 0;
-                };
-                Function<Integer, Integer> onFailure = (t) -> {
-                    Toast.makeText(this.getBaseContext(), "FUCK", Toast.LENGTH_LONG).show();
-                    return -1;
-                };
-                client.GetAll(new Teacher(), onSuccess, onFailure);
-            }
-            else
-            {
-                //TODO show existing teacher
-            }
+            Function<ArrayList<Object>, Integer> onSuccess = (teachers) -> {
+                ArrayList<Teacher> teachs = new ArrayList<>();
+                teachers.forEach(t -> teachs.add((Teacher)t));
+                setAdapter(teachs);
+                return 0;
+            };
+            Function<Integer, Integer> onFailure = (t) -> {
+                Toast.makeText(this.getBaseContext(), "FUCK", Toast.LENGTH_LONG).show();
+                return -1;
+            };
+            client.GetAll(new Teacher(), onSuccess, onFailure);
         }
         SearchView search_bar = (SearchView) findViewById(R.id.sv_search_teacher);
         search_bar.setOnQueryTextListener(this);

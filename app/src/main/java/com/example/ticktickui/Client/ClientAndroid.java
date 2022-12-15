@@ -29,7 +29,7 @@ import java.util.function.Function;
 
 public class ClientAndroid implements ClientInterface{
     private static AsyncHttpClient client = new AsyncHttpClient();
-    private static String BASE_URL = "http://10.0.0.10:5231"; // Remmember to update IP if changed...
+    private static String BASE_URL = "http://10.6.2.239:5231"; // Remmember to update IP if changed...
 //    private static String BASE_URL = "http://localhost:5231"; // Remmember to update IP if changed...
 
     private Context context;
@@ -394,22 +394,21 @@ public class ClientAndroid implements ClientInterface{
         });
     }
     @Override
-    public void GetTeacherByStudent(int StudentId, Function<ArrayList<Teacher>, Integer> callbackSuccess, Function<Integer, Integer> callbackFail)
+    public void GetTeacherByStudent(int StudentId, Function<Teacher, Integer> callbackSuccess, Function<Integer, Integer> callbackFail)
     {
         String URL = BASE_URL + "/Student/Teacher/" + StudentId;
         client.get(URL, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                // TODO implement me
-                System.out.println("success!");
-                System.out.println(new String(responseBody, StandardCharsets.UTF_8));
+                GsonBuilder builder = new GsonBuilder();
+                String object = new String(responseBody, StandardCharsets.UTF_8);
+                Teacher teacher = builder.create().fromJson(object, Teacher.class);
+                callbackSuccess.apply(teacher);
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                // TODO implement me
-                System.out.println("Failed");
-                System.out.println(new String(responseBody, StandardCharsets.UTF_8));
+                callbackFail.apply(0);
             }
         });
     }

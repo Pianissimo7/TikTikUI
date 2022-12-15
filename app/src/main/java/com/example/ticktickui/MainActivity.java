@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity{
 
         boolean debug = true;
         if (debug) {
-            boolean test_student = false;
+            boolean test_student = true;
             if (test_student) {
                 GlobalVariables.is_teacher = false;
                 GlobalVariables.teacher = new Teacher();
