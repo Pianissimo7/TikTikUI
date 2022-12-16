@@ -29,8 +29,8 @@ import java.util.function.Function;
 
 public class ClientAndroid implements ClientInterface{
     private static AsyncHttpClient client = new AsyncHttpClient();
-    private static String BASE_URL = "http://10.6.2.239:5231"; // Remmember to update IP if changed...
-//    private static String BASE_URL = "http://localhost:5231"; // Remmember to update IP if changed...
+    private static String BASE_URL = "http://10.100.102.8:5231"; // Remember to update IP if changed...
+//    private static String BASE_URL = "http://localhost:5231"; // Remember to update IP if changed...
 
     private Context context;
     private MainActivity mainActivity;
@@ -435,7 +435,7 @@ public class ClientAndroid implements ClientInterface{
                     Lesson lesson = new Lesson(teachid, stdid, date, comment);
                     lesson.id = builder.create().fromJson(obj.get("id"), int.class);
                     lessons.add(lesson);
-                    System.out.println(lesson);
+//                    System.out.println(lesson);
                 }
                 activity.setLessonList(lessons);
 

@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity{
         pagerAdapter.addFragmet(registerFragment);
         viewPager.setAdapter(pagerAdapter);
 
-        boolean debug = true;
+        boolean debug = false;
         if (debug) {
             boolean test_student = false;
             if (test_student) {

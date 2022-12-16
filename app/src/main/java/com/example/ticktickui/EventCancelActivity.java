@@ -8,10 +8,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.ticktickui.global_variables.GlobalVariables;
 
 import java.time.LocalTime;
+import java.util.function.Function;
 
 public class EventCancelActivity extends AppCompatActivity {
 
@@ -40,8 +42,23 @@ public class EventCancelActivity extends AppCompatActivity {
         btn_submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+//                Function<Integer, Integer> onSuccess = (t) ->
+//                {
+//                    DeleteEvent(v);
+//                    finish();
+//                    Toast.makeText(getBaseContext(), "Success", Toast.LENGTH_LONG).show();
+//                    return 0;
+//                };
+//                Function<Integer, Integer> onFailure = (t) ->
+//                {
+//                    finish();
+//                    Toast.makeText(getBaseContext(), "Couldn't make your request", Toast.LENGTH_LONG).show();
+//                    return 0;
+//                };
+//                GlobalVariables.client.DeleteLesson();
                 DeleteEvent(v);
                 finish();
+
             }
         });
     }
