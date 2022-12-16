@@ -15,9 +15,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.ticktickui.Client.ClientAndroid;
+import com.example.ticktickui.Client.Models.Lesson;
 import com.example.ticktickui.global_variables.GlobalVariables;
 
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 
 public class HourAdapter extends ArrayAdapter<HourEvent>
@@ -27,7 +29,6 @@ public class HourAdapter extends ArrayAdapter<HourEvent>
     {
         super(context, 0, hourEvents);
         c = context;
-
     }
 
     @NonNull
@@ -40,14 +41,14 @@ public class HourAdapter extends ArrayAdapter<HourEvent>
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.hour_cell, parent, false);
 
         setHour(convertView, event.time);
-        setEvent(convertView, event.event);
+        setEvent(convertView, event.lesson);
 
         Button btn_set_lesson = (Button) convertView.findViewById(R.id.button);
             btn_set_lesson.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent intent;
-                    if (event.event == null) {
+                    if (event.lesson == null) {
                         if(!GlobalVariables.is_teacher) {
                             intent = new Intent(c, EventEditActivity.class);
                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -76,12 +77,20 @@ public class HourAdapter extends ArrayAdapter<HourEvent>
         timeTV.setText(CalendarUtils.formattedShortTime(time));
     }
 
-    private void setEvent(View view, Event event)
+    private void setEvent(View view, Lesson lesson)
     {
         Button button = (Button) view.findViewById(R.id.button);
-        if (event != null) {
+        button.setEnabled(true);
+        if (lesson != null) {
             button.setText(R.string.lesson_set);
-            button.setBackground(getDrawable(c, R.drawable.btn_custom_lesson_set));
+            if(!GlobalVariables.is_teacher)
+                if(GlobalVariables.user_id == lesson.Student_id)
+                    button.setBackground(getDrawable(c, R.drawable.btn_custom_lesson_set));
+                else {
+                    button.setBackground(getDrawable(c, R.drawable.btn_custom_lesson_disabled));
+                    button.setText(R.string.lesson_taken);
+                    button.setEnabled(false);
+                }
         }
         else {
             button.setText(R.string.order_lesson);

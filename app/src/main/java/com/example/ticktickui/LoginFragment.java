@@ -8,17 +8,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.ticktickui.Client.ClientAndroid;
+import com.example.ticktickui.Client.Models.Student;
+import com.example.ticktickui.Client.Models.Teacher;
 import com.example.ticktickui.global_variables.GlobalVariables;
 
-public class LoginFragment extends Fragment {
+import java.util.function.Function;
 
-    ClientAndroid client;
-    public LoginFragment(ClientAndroid client) {
-        // Required empty public constructor
-        this.client = client;
-    }
+public class LoginFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -60,6 +59,42 @@ public class LoginFragment extends Fragment {
         startActivity(home_activity);
     }
     public void login(String email, String password) {
-        client.LoginUser(email, password);
+        Function<Object, Integer> onSuccess = (T) ->
+        {
+            if (T instanceof Teacher) {
+                Teacher teacher = (Teacher) T;
+                GlobalVariables.UpdateFields(
+                        teacher.name,
+                        teacher.phone,
+                        teacher.email,
+                        teacher.id,
+                        true);
+                switch_to_home_teacher_activity();
+                return 0;
+            }
+            else if(T instanceof Student)
+            {
+                Student student = (Student) T;
+                GlobalVariables.UpdateFields(
+                        student.name,
+                        student.phone,
+                        student.email,
+                        student.id,
+                        false);
+                switch_to_home_student_activity();
+            }
+            return 0;
+        };
+        Function<Integer, Integer> onFailure = (errorCode) ->
+        {
+            if(errorCode == 404)
+                Toast.makeText(this.getContext(), "Email or password are not currect", Toast.LENGTH_LONG).show();
+            else
+                Toast.makeText(this.getContext(), "Something went wrong", Toast.LENGTH_LONG).show();
+
+            return 0;
+        };
+
+        GlobalVariables.client.LoginUser(email, password, onSuccess, onFailure);
     }
 }

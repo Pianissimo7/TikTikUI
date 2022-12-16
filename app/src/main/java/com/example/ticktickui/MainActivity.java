@@ -29,16 +29,16 @@ public class MainActivity extends AppCompatActivity{
         AuthenticationPagerAdapter pagerAdapter = new AuthenticationPagerAdapter(getSupportFragmentManager());
         GlobalVariables.client = new ClientAndroid(this);
         // TODO Refactor this
-        loginFragment = new LoginFragment(GlobalVariables.client);
+        loginFragment = new LoginFragment();
         // TODO Refactor this
-        registerFragment = new RegisterFragment(GlobalVariables.client);
+        registerFragment = new RegisterFragment();
         pagerAdapter.addFragmet(loginFragment);
         pagerAdapter.addFragmet(registerFragment);
         viewPager.setAdapter(pagerAdapter);
 
         boolean debug = false;
         if (debug) {
-            boolean test_student = false;
+            boolean test_student = true;
             if (test_student) {
                 GlobalVariables.is_teacher = false;
                 GlobalVariables.teacher = new Teacher();
@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity{
             }
             else {
                 GlobalVariables.is_teacher = true;
-                GlobalVariables.user_id = 1;
+                GlobalVariables.user_id = 2;
                 Intent intent = new Intent(this, HomeTeacherActivity.class);
                 startActivity(intent);
             }

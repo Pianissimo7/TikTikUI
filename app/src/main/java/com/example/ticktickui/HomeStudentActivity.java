@@ -28,12 +28,19 @@ public class HomeStudentActivity extends AppCompatActivity {
 
         // calendar button functionality
         Button btn_calendar = (Button)findViewById(R.id.b_calendar);
+        btn_calendar.setEnabled(true);
+        System.out.println(GlobalVariables.teacher);
+        if(GlobalVariables.teacher == null)
+        {
+            btn_calendar.setEnabled(false);
+        }
         btn_calendar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 switch_to_calendar_activity();
             }
         });
+
         // my teacher button functionality
         Button btn_my_teacher = (Button)findViewById(R.id.b_my_teacher);
         btn_my_teacher.setOnClickListener(new View.OnClickListener() {
@@ -61,7 +68,6 @@ public class HomeStudentActivity extends AppCompatActivity {
         btn_teachers_list.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 switch_to_teacher_list_activity();
             }
         });

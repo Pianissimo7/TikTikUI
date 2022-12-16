@@ -1,16 +1,18 @@
 package com.example.ticktickui;
 
+import com.example.ticktickui.Client.Models.Lesson;
+
 import java.time.LocalTime;
 
 public class HourEvent
 {
     LocalTime time;
-    Event event;
+    Lesson lesson;
 
-    public HourEvent(LocalTime time, Event event)
+    public HourEvent(LocalTime time, Lesson lesson)
     {
         this.time = time;
-        this.event = event;
+        this.lesson = lesson;
     }
 
     public LocalTime getTime()
@@ -23,13 +25,4 @@ public class HourEvent
         this.time = time;
     }
 
-    public Event getEvents()
-    {
-        return event;
-    }
-
-    public void setEvents(Event event)
-    {
-        this.event = event;
-    }
 }

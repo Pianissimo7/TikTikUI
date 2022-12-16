@@ -20,12 +20,6 @@ import com.example.ticktickui.global_variables.GlobalVariables;
  */
 public class RegisterFragment extends Fragment {
 
-    private ClientAndroid client;
-    public RegisterFragment(ClientAndroid client) {
-        // Required empty public constructor
-        this.client = client;
-    }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -79,12 +73,12 @@ public class RegisterFragment extends Fragment {
             if(type)
             {
                 Teacher teach = new Teacher(name, email, phone, password);
-                client.RegisterUser(teach);
+                GlobalVariables.client.RegisterUser(teach);
             }
             else
             {
                 Student student = new Student(name, email, phone, password);
-                client.RegisterUser(student);
+                GlobalVariables.client.RegisterUser(student);
             }
         }
         else{

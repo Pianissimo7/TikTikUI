@@ -72,9 +72,9 @@ public class TeachersViewAdapter extends BaseAdapter {
         btn_sign_to_teacher.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 Function<Integer, Integer> onSuccess = (t) -> {
                     Toast.makeText(c, "Success!", Toast.LENGTH_LONG).show();
+                    GlobalVariables.teacher = Teachers.get(position);
                     return_to_home();
                     return 0;
                 };
@@ -90,6 +90,7 @@ public class TeachersViewAdapter extends BaseAdapter {
     public void return_to_home() {
         Intent home_activity = new Intent(c, HomeStudentActivity.class);
         c.startActivity(home_activity);
+
     }
 
     // Filter Class

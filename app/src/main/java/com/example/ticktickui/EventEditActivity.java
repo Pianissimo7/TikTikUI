@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.ticktickui.Client.Models.Lesson;
 import com.example.ticktickui.global_variables.GlobalVariables;
@@ -15,6 +16,8 @@ import com.example.ticktickui.global_variables.GlobalVariables;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.function.Function;
 
 public class EventEditActivity extends AppCompatActivity
 {
@@ -67,10 +70,6 @@ public class EventEditActivity extends AppCompatActivity
 
     public void saveEventAction(View view)
     {
-        if(GlobalVariables.is_teacher)
-        {
-
-        }
         LocalDateTime date = LocalDateTime.of(CalendarUtils.selectedDate, time);
         String eventName = et_pick_up_place.getText().toString();
         Lesson lesson;
@@ -81,14 +80,11 @@ public class EventEditActivity extends AppCompatActivity
         else {
             lesson = new Lesson(GlobalVariables.teacher.id, student_id, date, eventName);
         }
-
         GlobalVariables.client.RegisterLesson(this, lesson);
     }
-    public void setLesson()
+    public void setLesson(Lesson lesson)
     {
-        String eventName = et_pick_up_place.getText().toString();
-        Event newEvent = new Event(eventName, CalendarUtils.selectedDate, time);
-        Event.eventsList.add(newEvent);
+        DailyCalendarActivity.lessons.add(lesson);
         // TODO refresh the page
     }
     public void switch_to_home_student_activity() {

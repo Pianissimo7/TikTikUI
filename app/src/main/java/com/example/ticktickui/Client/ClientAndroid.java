@@ -55,7 +55,8 @@ public class ClientAndroid implements ClientInterface{
      * @param Password
      */
     @Override
-    public void LoginUser( String Email, String Password)
+    public void LoginUser( String Email, String Password, Function<Object, Integer> callbackSuccess,
+                           Function<Integer, Integer> callbackFailure)
     {
         JsonObject jdata = new JsonObject();
         /**
@@ -74,44 +75,25 @@ public class ClientAndroid implements ClientInterface{
                     String object = new String(bytes, StandardCharsets.UTF_8);
                     GsonBuilder builder = new GsonBuilder();
                     Response res = builder.create().fromJson(object, Response.class);
-                    if(!res.approved)
-                        Toast.makeText(mainActivity.getBaseContext(), "wrong email or password", Toast.LENGTH_LONG).show();
-                    else {
+                    if(res.approved){
                         if (res.isTeacher)
                         {
                             JsonObject jsonObject =  builder.create().fromJson(object, JsonObject.class);
                             Teacher teacher = builder.create().fromJson(jsonObject.get("teacher"), Teacher.class);
-                            GlobalVariables.UpdateFields(
-                                    teacher.name,
-                                    teacher.phone,
-                                    teacher.email,
-                                    teacher.id,
-                                    true);
-                            mainActivity.loginFragment.switch_to_home_teacher_activity();
+                            callbackSuccess.apply(teacher);
                         }
                         else {
                             JsonObject jsonObject =  builder.create().fromJson(object, JsonObject.class);
                             Student student = builder.create().fromJson(jsonObject.get("student"), Student.class);
-                            GlobalVariables.UpdateFields(
-                                    student.name,
-                                    student.phone,
-                                    student.email,
-                                    student.id,
-                                    false);
                             GlobalVariables.teacher = builder.create().fromJson(jsonObject.get("teacher"), Teacher.class);
-                            mainActivity.loginFragment.switch_to_home_student_activity();
+                            callbackSuccess.apply(student);
                         }
                     }
                 }
 
                 @Override
                 public void onFailure(int i, Header[] headers, byte[] bytes, Throwable throwable) {
-                    if (i == 404) {
-                        Toast.makeText(mainActivity.getBaseContext(), "wrong enail or password", Toast.LENGTH_LONG).show();
-                    }
-                    else {
-                        Toast.makeText(mainActivity.getBaseContext(), "failed to connect to server", Toast.LENGTH_LONG).show();
-                    }
+                    callbackFailure.apply(i);
                 }
             });
         }
@@ -229,7 +211,7 @@ public class ClientAndroid implements ClientInterface{
             client.post(this.context, BASE_URL + "/Lesson", entity, "application/json", new AsyncHttpResponseHandler() {
                 @Override
                 public void onSuccess(int i, Header[] headers, byte[] bytes) {
-                    activity.setLesson();
+                    activity.setLesson(lesson);
                 }
 
                 @Override
@@ -310,22 +292,19 @@ public class ClientAndroid implements ClientInterface{
         });
     }
     @Override
-    public void DeleteLesson(int LessonId)
+    public void DeleteLesson(int LessonId, Function<Integer, Integer>callbackSuccess, Function<Integer, Integer> callbackFailure)
     {
         String URL = BASE_URL + "/Lesson";
         client.delete(URL, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                // TODO implement me
-                System.out.println("Success");
-                System.out.println(new String(responseBody, StandardCharsets.UTF_8));
+                callbackSuccess.apply(0);
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                // TODO implement me
-                System.out.println("Failed");
-                System.out.println(new String(responseBody, StandardCharsets.UTF_8));
+                System.out.println("Failed in Delete lesson, error message: " + statusCode + " " + LessonId);
+                callbackFailure.apply(0);
             }
         });
     }
@@ -414,14 +393,13 @@ public class ClientAndroid implements ClientInterface{
     }
 
     @Override
-    public void GetLessonsByObj(DailyCalendarActivity activity, int objId, boolean isTeacher) {
+    public void GetLessonsByObj(int objId, boolean isTeacher, Function<ArrayList<Lesson>, Integer> callbackSuccess,
+                                 Function<Integer, Integer> callbackFailure) {
         System.out.println("" + objId + " " + isTeacher);
         String URL = BASE_URL + "/Lesson/" + isTeacher + "/" + objId;
         client.get(URL, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-//                System.out.println("Success");
-//                System.out.println(new String(responseBody, StandardCharsets.UTF_8));
                 String strobject = new String(responseBody, StandardCharsets.UTF_8);
                 GsonBuilder builder = new GsonBuilder();
                 JsonObject[] json_objects =  builder.create().fromJson(strobject, JsonObject[].class);
@@ -435,17 +413,15 @@ public class ClientAndroid implements ClientInterface{
                     Lesson lesson = new Lesson(teachid, stdid, date, comment);
                     lesson.id = builder.create().fromJson(obj.get("id"), int.class);
                     lessons.add(lesson);
-//                    System.out.println(lesson);
                 }
-                activity.setLessonList(lessons);
+                callbackSuccess.apply(lessons);
 
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                // TODO implement me
-                System.out.println("Failed");
-                System.out.println(new String(responseBody, StandardCharsets.UTF_8));
+                System.out.println("Failed " + statusCode);
+                callbackFailure.apply(0);
             }
         });
     }
