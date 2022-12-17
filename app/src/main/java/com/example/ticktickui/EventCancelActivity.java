@@ -3,10 +3,8 @@ package com.example.ticktickui;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
-import android.provider.Settings;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,7 +41,7 @@ public class EventCancelActivity extends AppCompatActivity {
         Time.setText(new String("Time: " + lesson_to_remove.date.toLocalTime()));
         Place.setText(new String("at: " + lesson_to_remove.Comment));
 
-        Button btn_submit = (Button) findViewById(R.id.b_submit);
+        Button btn_submit = findViewById(R.id.b_submit);
         btn_submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

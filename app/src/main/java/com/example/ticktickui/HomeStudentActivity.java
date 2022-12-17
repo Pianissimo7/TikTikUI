@@ -23,11 +23,11 @@ public class HomeStudentActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home_student);
 
         c = this.getBaseContext();
-        TextView t_name = (TextView)findViewById(R.id.t_name);
+        TextView t_name = findViewById(R.id.t_name);
         t_name.setText(GlobalVariables.name);
 
         // calendar button functionality
-        Button btn_calendar = (Button)findViewById(R.id.b_calendar);
+        Button btn_calendar = findViewById(R.id.b_calendar);
         btn_calendar.setEnabled(true);
         System.out.println(GlobalVariables.teacher);
         if(GlobalVariables.teacher == null)
@@ -42,7 +42,7 @@ public class HomeStudentActivity extends AppCompatActivity {
         });
 
         // my teacher button functionality
-        Button btn_my_teacher = (Button)findViewById(R.id.b_my_teacher);
+        Button btn_my_teacher = findViewById(R.id.b_my_teacher);
         btn_my_teacher.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -64,7 +64,7 @@ public class HomeStudentActivity extends AppCompatActivity {
             }
         });
         // teachers list button functionality
-        Button btn_teachers_list = (Button)findViewById(R.id.b_teachers_list);
+        Button btn_teachers_list = findViewById(R.id.b_teachers_list);
         btn_teachers_list.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

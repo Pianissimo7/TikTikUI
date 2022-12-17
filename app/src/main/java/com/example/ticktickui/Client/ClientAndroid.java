@@ -6,11 +6,8 @@ import android.widget.Toast;
 import com.example.ticktickui.Client.Models.Lesson;
 import com.example.ticktickui.Client.Models.Response;
 import com.example.ticktickui.Client.Models.Teacher;
-import com.example.ticktickui.DailyCalendarActivity;
 import com.example.ticktickui.EventEditActivity;
-import com.example.ticktickui.MainActivity;
 import com.example.ticktickui.global_variables.GlobalVariables;
-import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.loopj.android.http.*;
@@ -20,7 +17,6 @@ import cz.msebera.android.httpclient.Header;
 import cz.msebera.android.httpclient.entity.StringEntity;
 
 import java.io.UnsupportedEncodingException;
-import java.lang.reflect.Array;
 import java.nio.charset.StandardCharsets;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -28,22 +24,21 @@ import java.util.Arrays;
 import java.util.function.Function;
 
 public class ClientAndroid implements ClientInterface{
-    private static AsyncHttpClient client = new AsyncHttpClient();
-    private static String BASE_URL = "http://10.100.102.8:5231"; // Remember to update IP if changed...
+    private static final AsyncHttpClient client = new AsyncHttpClient();
+    private static final String BASE_URL = "http://10.100.102.8:5231"; // Remember to update IP if changed...
 //    private static String BASE_URL = "http://localhost:5231"; // Remember to update IP if changed...
+    private static final String DEFAULT_ERR = "Something went wrong!";
+    private static final String DEFAULT_EMAIL_PASS_ERR = "Email or password is not correct";
+    private static final String EMAIL_EXISTS_ERR = "Email already exists";
+    private final Context context;
 
-    private Context context;
-    private MainActivity mainActivity;
-
-    public ClientAndroid(){}
     /**
      * To set Context, please use getBaseContext()
-     * @param context
+     * @param context a context
      */
     public ClientAndroid(Context context)
     {
         this.context = context;
-        this.mainActivity = (MainActivity) context;
         client.addHeader("Content-Type", "application/json");
     }
 
@@ -51,19 +46,17 @@ public class ClientAndroid implements ClientInterface{
      * this is called when a user is logged in,
      * This is used to update the server that a user connected,
      * to make sure we can see the actual logged in users.
-     * @param Email
-     * @param Password
+     * @param Email email of the user
+     * @param Password password of the user
+     *                 example:
+     *          * j-data.addProperty("Email", "mosheCohen@gmail.com");
+     *          *         j-data.addProperty("Password", "123456");
      */
     @Override
     public void LoginUser( String Email, String Password, Function<Object, Integer> callbackSuccess,
-                           Function<Integer, Integer> callbackFailure)
+                           Function<String, Integer> callbackFailure)
     {
         JsonObject jdata = new JsonObject();
-        /**
-         * example:
-         * jdata.addProperty("Email", "mosheCohen@gmail.com");
-         *         jdata.addProperty("Password", "123456");
-         */
         jdata.addProperty("Email", Email);
         jdata.addProperty("Password", Password);
         client.addHeader("Content-Type", "application/json");
@@ -76,14 +69,13 @@ public class ClientAndroid implements ClientInterface{
                     GsonBuilder builder = new GsonBuilder();
                     Response res = builder.create().fromJson(object, Response.class);
                     if(res.approved){
+                        JsonObject jsonObject =  builder.create().fromJson(object, JsonObject.class);
                         if (res.isTeacher)
                         {
-                            JsonObject jsonObject =  builder.create().fromJson(object, JsonObject.class);
                             Teacher teacher = builder.create().fromJson(jsonObject.get("teacher"), Teacher.class);
                             callbackSuccess.apply(teacher);
                         }
                         else {
-                            JsonObject jsonObject =  builder.create().fromJson(object, JsonObject.class);
                             Student student = builder.create().fromJson(jsonObject.get("student"), Student.class);
                             GlobalVariables.teacher = builder.create().fromJson(jsonObject.get("teacher"), Teacher.class);
                             callbackSuccess.apply(student);
@@ -93,11 +85,15 @@ public class ClientAndroid implements ClientInterface{
 
                 @Override
                 public void onFailure(int i, Header[] headers, byte[] bytes, Throwable throwable) {
-                    callbackFailure.apply(i);
+                    System.out.println(new String(bytes, StandardCharsets.UTF_8));
+                    if(bytes != null && i == 404)
+                        callbackFailure.apply(DEFAULT_EMAIL_PASS_ERR);
+                    else
+                        callbackFailure.apply(DEFAULT_ERR);
                 }
             });
         }
-        catch (Exception e)
+        catch (Exception ignored)
         {
 
         }
@@ -106,19 +102,20 @@ public class ClientAndroid implements ClientInterface{
     /**
      * This is used to update the server that a user disconnected,
      * to make sure we can see the actual logged in users.
-     * @param Email
-     * @param Password
+     * @param Email email of the user to disconnect
+     * @param Password password of the user to disconnect
+     *
+     *          * example :
+     *          * jdata.addProperty("Email", "mosheCohen@gmail.com");
+     *          *         jdata.addProperty("Password", "123456");
+     *
      */
     @Override
     public void DisconnectUser(String Email, String Password) {
         System.out.println("Disconnect user");
 
         JsonObject jdata = new JsonObject();
-        /**
-         * example :
-         * jdata.addProperty("Email", "mosheCohen@gmail.com");
-         *         jdata.addProperty("Password", "123456");
-         */
+
         jdata.addProperty("Email", Email);
         jdata.addProperty("Password", Password);
         try {
@@ -139,7 +136,7 @@ public class ClientAndroid implements ClientInterface{
                 }
             });
         }
-        catch (Exception e)
+        catch (Exception ignored)
         {
 
         }
@@ -147,20 +144,19 @@ public class ClientAndroid implements ClientInterface{
     /**
      * This is generally used when an user registers to the system,
      * to update the server and then to save him to the db if his information is valid
-     * @param user
+     * @param user user to register might be Student or Teacher
+     *             example :
+     *          * jdata.addProperty("Email", "mosheCohen@gmail.com");
+     *          *  jdata.addProperty("Password", "123456");
      */
     @Override
-    public void RegisterUser(Object user)
+    public void RegisterUser(Object user, Function<Integer, Integer> callbackSuccess,
+                             Function<String, Integer> callbackFailure)
     {
         System.out.println("Register user");
         boolean isTeacher = user instanceof Teacher;
         String URL = isTeacher ? BASE_URL + "/Teacher/Register" : BASE_URL + "/Student/Register";
         JsonObject jdata = json_builder(user);
-        /**
-         * example :
-         * jdata.addProperty("Email", "mosheCohen@gmail.com");
-         *  jdata.addProperty("Password", "123456");
-         */
 
         client.addHeader("Content-Type", "application/json");
         try {
@@ -168,25 +164,19 @@ public class ClientAndroid implements ClientInterface{
             client.post(this.context, URL, entity, "application/json", new AsyncHttpResponseHandler() {
                 @Override
                 public void onSuccess(int i, Header[] headers, byte[] bytes) {
-                    if(isTeacher) {
-//                        Teacher teacher = (Teacher) user;
-                        // mainActivity.loginFragment.login(teacher.email, teacher.password);
-                        System.out.println("Registry was Successfull");
-                    }
-                    else{
-//                        Student std = (Student) user;
-                        // mainActivity.loginFragment.login(std.email, std.password);
-                        System.out.println("Registry Successfull");
-                    }
+                    callbackSuccess.apply(0);
                 }
 
                 @Override
                 public void onFailure(int i, Header[] headers, byte[] bytes, Throwable throwable) {
-                    mainActivity.registerFragment.register_failed();
+                    if(bytes != null && i == 400)
+                        callbackFailure.apply(EMAIL_EXISTS_ERR);
+                    else
+                        callbackFailure.apply(DEFAULT_ERR);
                 }
             });
         }
-        catch (Exception e)
+        catch (Exception ignored)
         {
 
         }
@@ -196,7 +186,7 @@ public class ClientAndroid implements ClientInterface{
      * This is used when a teacher appoints a lesson with a student,
      * to update the server, and to receive back information if the
      * lesson is valid.
-     * @param lesson
+     * @param lesson lesson to register
      */
     @Override
     public void RegisterLesson(EventEditActivity activity, Lesson lesson) {
@@ -233,8 +223,8 @@ public class ClientAndroid implements ClientInterface{
      * This is used when the UI needs to update all the object available
      * on screen.
      *
-     * @param T
-     * @return
+     * @param T new Type of a Student or Lesson or Teacher
+     * gets all the records of type T, and applies callbackSuccess on the result
      */
     @Override
     public void GetAll(Object T, Function<ArrayList<Object>, Integer> callbackSuccess, Function<Integer, Integer> callbackFail) {
@@ -294,7 +284,7 @@ public class ClientAndroid implements ClientInterface{
     @Override
     public void DeleteLesson(int LessonId, Function<Integer, Integer>callbackSuccess, Function<Integer, Integer> callbackFailure)
     {
-        String URL = BASE_URL + "/Lesson";
+        String URL = BASE_URL + "/Lesson" + "/" + LessonId;
         client.delete(URL, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {

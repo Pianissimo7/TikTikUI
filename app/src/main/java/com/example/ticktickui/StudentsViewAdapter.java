@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import com.example.ticktickui.Client.Models.Student;
 
-import java.sql.Array;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,12 +29,12 @@ public class StudentsViewAdapter extends BaseAdapter {
         c = context;
         this.Students = students_list;
         inflater = LayoutInflater.from(c);
-        this.arraylist = new ArrayList<Student>();
+        this.arraylist = new ArrayList();
         this.arraylist.addAll(students_list);
         this.time = time;
     }
 
-    public class ViewHolder {
+    public static class ViewHolder {
         TextView name;
     }
 
@@ -59,7 +58,7 @@ public class StudentsViewAdapter extends BaseAdapter {
         if (view == null) {
             holder = new ViewHolder();
             view = inflater.inflate(R.layout.student_cell, null);
-            holder.name = (TextView) view.findViewById(R.id.t_name);
+            holder.name = view.findViewById(R.id.t_name);
             view.setTag(holder);
         } else {
             holder = (ViewHolder) view.getTag();

@@ -1,5 +1,6 @@
 package com.example.ticktickui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
@@ -8,9 +9,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.util.function.Function;
 import java.util.regex.*;
 
-import com.example.ticktickui.Client.ClientAndroid;
 import com.example.ticktickui.Client.Models.Student;
 import com.example.ticktickui.Client.Models.Teacher;
 import com.example.ticktickui.global_variables.GlobalVariables;
@@ -30,15 +33,15 @@ public class RegisterFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_register, container, false);
 
         // get all the inputs
-        TextView input_name = (TextView) view.findViewById(R.id.et_name);
-        TextView input_phone = (TextView) view.findViewById(R.id.ep_phone);
-        TextView input_email = (TextView) view.findViewById(R.id.tea_email);
-        TextView input_password = (TextView) view.findViewById(R.id.et_password);
-        TextView input_re_password = (TextView) view.findViewById(R.id.et_repassword);
-        Switch input_type = (Switch) view.findViewById(R.id.switch1);
+        TextView input_name = view.findViewById(R.id.et_name);
+        TextView input_phone =  view.findViewById(R.id.ep_phone);
+        TextView input_email =  view.findViewById(R.id.tea_email);
+        TextView input_password =  view.findViewById(R.id.et_password);
+        TextView input_re_password =  view.findViewById(R.id.et_repassword);
+        Switch input_type = view.findViewById(R.id.switch1);
 
         // button functionality
-        Button btn_Register = (Button) view.findViewById(R.id.btn_register);
+        Button btn_Register = view.findViewById(R.id.btn_register);
         btn_Register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -62,23 +65,36 @@ public class RegisterFragment extends Fragment {
 
         return view;
     }
-    public void register_failed()
-    {
-        System.out.println("FUCK MY LIFE");
-    }
-    private void register(String name, String phone, String email, String password, String re_password, boolean type)
+    private void register(String name, String phone, String email, String password, String re_password, boolean isTeacher)
     {
         if(verify_register(name, phone,email,password,re_password))
         {
-            if(type)
+            Function<String, Integer> onFailure = (errorMSG) ->
+            {
+                Toast.makeText(this.getContext(), errorMSG, Toast.LENGTH_LONG).show();
+                return 0;
+            };
+            if(isTeacher)
             {
                 Teacher teach = new Teacher(name, email, phone, password);
-                GlobalVariables.client.RegisterUser(teach);
+                Function<Integer, Integer> onSuccess = (t)->
+                {
+                    Intent intent = new Intent(this.getActivity(), HomeTeacherActivity.class);
+                    startActivity(intent);
+                    return 0;
+                };
+                GlobalVariables.client.RegisterUser(teach, onSuccess, onFailure);
             }
             else
             {
                 Student student = new Student(name, email, phone, password);
-                GlobalVariables.client.RegisterUser(student);
+                Function<Integer, Integer> onSuccess = (t) ->
+                {
+                    Intent intent = new Intent(this.getActivity(), HomeStudentActivity.class);
+                    startActivity(intent);
+                    return 0;
+                };
+                GlobalVariables.client.RegisterUser(student, onSuccess, onFailure);
             }
         }
         else{
@@ -86,7 +102,7 @@ public class RegisterFragment extends Fragment {
         }
     }
     private boolean verify_register(String name, String phone, String email, String password, String re_password) {
-        if (name == "") {
+        if (name.equals("")) {
             System.out.println("failed on name. name was left blank");
             return false;
         }
@@ -94,7 +110,7 @@ public class RegisterFragment extends Fragment {
             System.out.println("failed on phone length, expected 10, got: " + phone.length());
             return false;
         }
-        if (password == re_password) {
+        if (password.equals(re_password)) {
             System.out.println("failed on password re verification " + password + " != " + re_password);
             return false;
         }

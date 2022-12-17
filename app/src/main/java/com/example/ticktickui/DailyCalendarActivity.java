@@ -5,7 +5,6 @@ import static com.example.ticktickui.CalendarUtils.selectedDate;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
-import android.provider.Settings;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -14,7 +13,6 @@ import android.widget.Toast;
 import com.example.ticktickui.Client.Models.Lesson;
 import com.example.ticktickui.global_variables.GlobalVariables;
 
-import java.lang.reflect.Array;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.TextStyle;
@@ -25,7 +23,7 @@ import java.util.function.Function;
 
 public class DailyCalendarActivity extends AppCompatActivity
 {
-    private int lesson_length = 45;
+    private final int lesson_length = 45;
     private TextView monthDayText;
     private TextView dayOfWeekTV;
     private ListView hourListView;
@@ -41,7 +39,7 @@ public class DailyCalendarActivity extends AppCompatActivity
         CalendarUtils.selectedDate = LocalDate.now();
         Function<ArrayList<Lesson>, Integer> onSuccess = (lesons) ->
         {
-            lessons = lesons;
+            this.lessons = lesons;
             if(!refreshed)
                 this.recreate();
             refreshed = true;
@@ -105,7 +103,6 @@ public class DailyCalendarActivity extends AppCompatActivity
                 Lesson lesson = null;
                 if(optional.isPresent()) {
                     lesson = optional.get();
-                    System.out.println("FUCKKKKKKKKCKKCKCKCKCKCKCKCKC " + lesson);
                 }
                 hourEvent = new HourEvent(time, lesson);
                 list.add(hourEvent);

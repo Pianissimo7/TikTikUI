@@ -2,22 +2,18 @@ package com.example.ticktickui;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.example.ticktickui.Client.Models.Lesson;
 import com.example.ticktickui.global_variables.GlobalVariables;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.function.Function;
 
 public class EventEditActivity extends AppCompatActivity
 {
@@ -27,6 +23,7 @@ public class EventEditActivity extends AppCompatActivity
     private int student_id;
     private String student_name;
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -45,7 +42,7 @@ public class EventEditActivity extends AppCompatActivity
         Time.setText("Time: " + CalendarUtils.formattedTime(time));
 
 
-        Button btn_submit = (Button) findViewById(R.id.b_submit);
+        Button btn_submit = findViewById(R.id.b_submit);
         btn_submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

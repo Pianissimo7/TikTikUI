@@ -1,5 +1,6 @@
 package com.example.ticktickui;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -24,18 +25,18 @@ public class TeachersViewAdapter extends BaseAdapter {
 
     Context c;
     LayoutInflater inflater;
-    private List<Teacher> Teachers = null;
+    private List<Teacher> Teachers;
     private ArrayList<Teacher> arraylist;
 
     public TeachersViewAdapter(Context context, List<Teacher> teachers_list) {
         c = context;
         this.Teachers = teachers_list;
         inflater = LayoutInflater.from(c);
-        this.arraylist = new ArrayList<Teacher>();
+        this.arraylist = new ArrayList();
         this.arraylist.addAll(teachers_list);
     }
 
-    public class ViewHolder {
+    public static class ViewHolder {
         TextView name;
     }
 
@@ -54,12 +55,13 @@ public class TeachersViewAdapter extends BaseAdapter {
         return position;
     }
 
+    @SuppressLint("SetTextI18n")
     public View getView(final int position, View view, ViewGroup parent) {
         final ViewHolder holder;
         if (view == null) {
             holder = new ViewHolder();
             view = inflater.inflate(R.layout.teacher_cell, null);
-            holder.name = (TextView) view.findViewById(R.id.t_name);
+            holder.name =  view.findViewById(R.id.t_name);
             view.setTag(holder);
         } else {
             holder = (ViewHolder) view.getTag();
@@ -67,8 +69,8 @@ public class TeachersViewAdapter extends BaseAdapter {
         // Set the results into TextViews
         holder.name.setText(Teachers.get(position).name);
         // sign to teacher button functionality
-        Button btn_sign_to_teacher = (Button) view.findViewById(R.id.b_sign_to_teacher);
-        btn_sign_to_teacher.setText(new String("Sign to"));
+        Button btn_sign_to_teacher =  view.findViewById(R.id.b_sign_to_teacher);
+        btn_sign_to_teacher.setText("Sign to");
         btn_sign_to_teacher.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

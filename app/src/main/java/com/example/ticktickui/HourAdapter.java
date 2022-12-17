@@ -14,12 +14,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.example.ticktickui.Client.ClientAndroid;
 import com.example.ticktickui.Client.Models.Lesson;
 import com.example.ticktickui.global_variables.GlobalVariables;
 
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.List;
 
 public class HourAdapter extends ArrayAdapter<HourEvent>
@@ -43,7 +41,7 @@ public class HourAdapter extends ArrayAdapter<HourEvent>
         setHour(convertView, event.time);
         setEvent(convertView, event.lesson);
 
-        Button btn_set_lesson = (Button) convertView.findViewById(R.id.button);
+        Button btn_set_lesson = convertView.findViewById(R.id.button);
             btn_set_lesson.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -79,7 +77,7 @@ public class HourAdapter extends ArrayAdapter<HourEvent>
 
     private void setEvent(View view, Lesson lesson)
     {
-        Button button = (Button) view.findViewById(R.id.button);
+        Button button =view.findViewById(R.id.button);
         button.setEnabled(true);
         if (lesson != null) {
             button.setText(R.string.lesson_set);

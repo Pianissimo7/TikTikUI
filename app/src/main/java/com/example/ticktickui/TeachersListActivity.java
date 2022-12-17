@@ -8,14 +8,11 @@ import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Toast;
 
-import com.example.ticktickui.Client.Models.Student;
 import com.example.ticktickui.Client.Models.Teacher;
-import com.google.gson.JsonObject;
 
 import static com.example.ticktickui.global_variables.GlobalVariables.*;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.function.Function;
 
 public class TeachersListActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
@@ -41,13 +38,13 @@ public class TeachersListActivity extends AppCompatActivity implements SearchVie
             };
             client.GetAll(new Teacher(), onSuccess, onFailure);
         }
-        SearchView search_bar = (SearchView) findViewById(R.id.sv_search_teacher);
+        SearchView search_bar =  findViewById(R.id.sv_search_teacher);
         search_bar.setOnQueryTextListener(this);
 
     }
     public void setAdapter(ArrayList<Teacher> teachers)
     {
-        ListView list = (ListView) findViewById(R.id.lv_teachers_list);
+        ListView list = findViewById(R.id.lv_teachers_list);
         adapter = new TeachersViewAdapter(this, teachers);
         list.setAdapter(adapter);
     }
@@ -59,8 +56,7 @@ public class TeachersListActivity extends AppCompatActivity implements SearchVie
 
     @Override
     public boolean onQueryTextChange(String newText) {
-        String text = newText;
-        adapter.filter(text);
+        adapter.filter(newText);
         return false;
     }
 

@@ -2,6 +2,7 @@ package com.example.ticktickui;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -9,13 +10,14 @@ import android.widget.Button;
 
 public class HomeTeacherActivity extends AppCompatActivity {
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_teacher);
 
         // calendar button functionality
-        Button btn_calendar = (Button)findViewById(R.id.b_calendar);
+        Button btn_calendar = findViewById(R.id.b_calendar);
         btn_calendar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -24,8 +26,8 @@ public class HomeTeacherActivity extends AppCompatActivity {
         });
 
         // students list button functionality
-        Button btn_students_list = (Button)findViewById(R.id.b_teachers_list);
-        btn_students_list.setText(new String("My Students"));
+        Button btn_students_list = findViewById(R.id.b_teachers_list);
+        btn_students_list.setText("My Students");
         btn_students_list.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

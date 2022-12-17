@@ -7,8 +7,6 @@ import android.widget.TextView;
 
 import com.example.ticktickui.global_variables.GlobalVariables;
 
-import org.w3c.dom.Text;
-
 public class MyTeacherActivity extends AppCompatActivity {
 
     @Override
@@ -16,7 +14,7 @@ public class MyTeacherActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_teacher);
 
-        TextView textView = (TextView) findViewById(R.id.tv_teacher_details);
+        TextView textView = findViewById(R.id.tv_teacher_details);
 
         if (GlobalVariables.teacher != null) {
             String name = GlobalVariables.teacher.name;

@@ -7,7 +7,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 
 import com.example.ticktickui.Client.ClientAndroid;
 import com.example.ticktickui.Client.Models.Teacher;
@@ -28,9 +27,7 @@ public class MainActivity extends AppCompatActivity{
 
         AuthenticationPagerAdapter pagerAdapter = new AuthenticationPagerAdapter(getSupportFragmentManager());
         GlobalVariables.client = new ClientAndroid(this);
-        // TODO Refactor this
         loginFragment = new LoginFragment();
-        // TODO Refactor this
         registerFragment = new RegisterFragment();
         pagerAdapter.addFragmet(loginFragment);
         pagerAdapter.addFragmet(registerFragment);

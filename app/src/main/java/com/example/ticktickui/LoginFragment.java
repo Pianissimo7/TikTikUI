@@ -10,7 +10,6 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.ticktickui.Client.ClientAndroid;
 import com.example.ticktickui.Client.Models.Student;
 import com.example.ticktickui.Client.Models.Teacher;
 import com.example.ticktickui.global_variables.GlobalVariables;
@@ -28,11 +27,11 @@ public class LoginFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_login, container, false);
 
         // get all the inputs
-        TextView input_email = (TextView) view.findViewById(R.id.tea_email);
-        TextView input_password = (TextView) view.findViewById(R.id.et_password);
+        TextView input_email = view.findViewById(R.id.tea_email);
+        TextView input_password =view.findViewById(R.id.et_password);
 
         // button functionality
-        Button btn_Login = (Button) view.findViewById(R.id.btn_login);
+        Button btn_Login = view.findViewById(R.id.btn_login);
         btn_Login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -85,13 +84,9 @@ public class LoginFragment extends Fragment {
             }
             return 0;
         };
-        Function<Integer, Integer> onFailure = (errorCode) ->
+        Function<String, Integer> onFailure = (errorMessage) ->
         {
-            if(errorCode == 404)
-                Toast.makeText(this.getContext(), "Email or password are not currect", Toast.LENGTH_LONG).show();
-            else
-                Toast.makeText(this.getContext(), "Something went wrong", Toast.LENGTH_LONG).show();
-
+            Toast.makeText(this.getContext(), errorMessage , Toast.LENGTH_LONG).show();
             return 0;
         };
 

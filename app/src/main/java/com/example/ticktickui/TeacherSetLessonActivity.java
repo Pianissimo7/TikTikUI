@@ -2,17 +2,12 @@ package com.example.ticktickui;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.example.ticktickui.Client.Models.Student;
-import com.example.ticktickui.Client.Models.Teacher;
 import com.example.ticktickui.global_variables.GlobalVariables;
 
 import java.time.LocalTime;
@@ -47,7 +42,7 @@ public class TeacherSetLessonActivity extends AppCompatActivity implements Searc
     }
     public void setAdapter(ArrayList<Student> students)
     {
-        ListView list = (ListView) findViewById(R.id.lv_students_list);
+        ListView list = findViewById(R.id.lv_students_list);
         adapter = new StudentsViewAdapter(this, students, time);
         list.setAdapter(adapter);
     }
@@ -60,8 +55,7 @@ public class TeacherSetLessonActivity extends AppCompatActivity implements Searc
 
     @Override
     public boolean onQueryTextChange(String newText) {
-        String text = newText;
-        adapter.filter(text);
+        adapter.filter(newText);
         return false;
     }
 
