@@ -103,21 +103,21 @@ public class RegisterFragment extends Fragment {
     }
     private boolean verify_register(String name, String phone, String email, String password, String re_password) {
         if (name.equals("")) {
-            System.out.println("failed on name. name was left blank");
+            Toast.makeText(getContext(), "Name cannot be empty", Toast.LENGTH_LONG).show();
             return false;
         }
         if (phone.length() != 10) {
-            System.out.println("failed on phone length, expected 10, got: " + phone.length());
+            Toast.makeText(getContext(), "Phone length must be 10 ", Toast.LENGTH_LONG).show();
             return false;
         }
-        if (password.equals(re_password)) {
-            System.out.println("failed on password re verification " + password + " != " + re_password);
+        if (password == re_password) {
+            Toast.makeText(getContext(), "Passwords are identical", Toast.LENGTH_LONG).show();
             return false;
         }
         String regex = "^[\\p{L}0-9!#$%&'*+\\/=?^_`{|}~-][\\p{L}0-9.!#$%&'*+\\/=?^_`{|}~-]{0,63}@[\\p{L}0-9-]+(?:\\.[\\p{L}0-9-]{2,7})*$";
         Pattern pattern = Pattern.compile(regex);
         if (!pattern.matcher(email).matches()) {
-            System.out.println("failed on email verification");
+            Toast.makeText(getContext(), "Email is not in correct format", Toast.LENGTH_LONG).show();
             return false;
         }
         return true;

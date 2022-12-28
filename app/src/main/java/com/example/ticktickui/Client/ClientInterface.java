@@ -4,6 +4,8 @@ import com.example.ticktickui.Client.Models.Lesson;
 import com.example.ticktickui.Client.Models.Student;
 import com.example.ticktickui.Client.Models.Teacher;
 import com.example.ticktickui.EventEditActivity;
+
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.function.Function;
 
@@ -28,5 +30,13 @@ public interface ClientInterface {
                          Function<ArrayList<Lesson>, Integer> callbackSuccess,
                          Function<Integer, Integer> callbackFailure);
     void GetTeachersByName(String name);
+    void GetTeacherWorkTimes(int id,
+                             Function<Integer, Integer> callbackSuccess,
+                             Function<Integer, Integer> callbackFailure);
+    void UpdateTeacherWorkTimes(int id, LocalTime startTime, LocalTime endTime,
+                                Function<Integer, Integer> callbackSuccess,
+                                Function<Integer, Integer> callbackFailure);
+
+
 
 }

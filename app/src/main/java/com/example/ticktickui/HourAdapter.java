@@ -81,14 +81,21 @@ public class HourAdapter extends ArrayAdapter<HourEvent>
         button.setEnabled(true);
         if (lesson != null) {
             button.setText(R.string.lesson_set);
-            if(!GlobalVariables.is_teacher)
-                if(GlobalVariables.user_id == lesson.Student_id)
+            if(!GlobalVariables.is_teacher) {
+                if (GlobalVariables.user_id == lesson.Student_id) {
                     button.setBackground(getDrawable(c, R.drawable.btn_custom_lesson_set));
+                }
                 else {
                     button.setBackground(getDrawable(c, R.drawable.btn_custom_lesson_disabled));
                     button.setText(R.string.lesson_taken);
                     button.setEnabled(false);
                 }
+            }
+            else
+            {
+                button.setBackground(getDrawable(c, R.drawable.btn_custom_lesson_set));
+            }
+
         }
         else {
             button.setText(R.string.order_lesson);

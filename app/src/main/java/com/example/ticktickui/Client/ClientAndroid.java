@@ -18,6 +18,7 @@ import cz.msebera.android.httpclient.entity.StringEntity;
 
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -25,7 +26,7 @@ import java.util.function.Function;
 
 public class ClientAndroid implements ClientInterface{
     private static final AsyncHttpClient client = new AsyncHttpClient();
-    private static final String BASE_URL = "http://10.100.102.8:5231"; // Remember to update IP if changed...
+    private static final String BASE_URL = "http://10.0.0.6:5231"; // Remember to update IP if changed...
 //    private static String BASE_URL = "http://localhost:5231"; // Remember to update IP if changed...
     private static final String DEFAULT_ERR = "Something went wrong!";
     private static final String DEFAULT_EMAIL_PASS_ERR = "Email or password is not correct";
@@ -313,6 +314,7 @@ public class ClientAndroid implements ClientInterface{
 
                 @Override
                 public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                    System.out.println(statusCode);
                     callbackFailure.apply(-1);
                 }
             });
@@ -434,6 +436,52 @@ public class ClientAndroid implements ClientInterface{
                 System.out.println(new String(responseBody, StandardCharsets.UTF_8));
             }
         });
+    }
+    @Override
+    public void GetTeacherWorkTimes(int id,
+                             Function<Integer, Integer> callbackSuccess,
+                             Function<Integer, Integer> callbackFailure)
+    {
+        String URL = BASE_URL + "/WorkTimes/" + id;
+        client.get(URL, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                // TODO: IMPLEMENT ME
+                callbackSuccess.apply(0);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                // TODO: IMPLEMENT ME
+                callbackFailure.apply(0);
+            }
+        });
+
+    }
+    @Override
+    public void UpdateTeacherWorkTimes(int id, LocalTime startTime, LocalTime endTime,
+                                Function<Integer, Integer> callbackSuccess,
+                                Function<Integer, Integer> callbackFailure)
+    {
+        String URL = BASE_URL + "/WorkTimes/" + id + "/" + startTime.toString() + "/" + endTime.toString();
+        //             client.post(this.context, URL, entity, "application/json", new AsyncHttpResponseHandler() {
+        try {
+            StringEntity entity = new StringEntity("");
+            client.post(this.context, URL, entity, "application/json", new AsyncHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                    callbackSuccess.apply(0);
+                }
+                @Override
+                public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                    callbackFailure.apply(0);
+                }
+            });
+        }
+        catch (Exception ignored)
+        {
+
+        }
     }
 
 
