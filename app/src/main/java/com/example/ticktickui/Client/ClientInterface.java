@@ -33,7 +33,7 @@ public interface ClientInterface {
     void GetTeacherWorkTimes(int id,
                              Function<Integer, Integer> callbackSuccess,
                              Function<Integer, Integer> callbackFailure);
-    void UpdateTeacherWorkTimes(int id, LocalTime startTime, LocalTime endTime,
+    void UpdateTeacherWorkTimes(int id, LocalTime[] startTime, LocalTime[] endTime,
                                 Function<Integer, Integer> callbackSuccess,
                                 Function<Integer, Integer> callbackFailure);
 

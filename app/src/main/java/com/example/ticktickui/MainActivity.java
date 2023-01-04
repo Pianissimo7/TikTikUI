@@ -33,9 +33,9 @@ public class MainActivity extends AppCompatActivity{
         pagerAdapter.addFragmet(registerFragment);
         viewPager.setAdapter(pagerAdapter);
 
-        boolean debug = false;
+        boolean debug = true;
         if (debug) {
-            boolean test_student = true;
+            boolean test_student = false;
             if (test_student) {
                 GlobalVariables.is_teacher = false;
                 GlobalVariables.teacher = new Teacher();

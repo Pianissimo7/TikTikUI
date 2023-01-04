@@ -23,4 +23,17 @@
     <string name="cancel_lesson_confirmation">are you sure you want to cancel the lesson:</string>
     <string name="no_teacher_text">You are not currently signed to any teachers</string>
     <string name="lesson_taken">Lesson is taken</string>
+
+    <string name="teacher_settings_title">Settings</string>
+    <string name="t_day_header">Day</string>
+    <string name="t_starting_time_header">Start</string>
+    <string name="t_ending_time_header">End</string>
+    <string name="t_sunday">Sunday</string>
+    <string name="t_monday">Monday</string>
+    <string name="t_tuesday">Tuesday</string>
+    <string name="t_wednesday">Wednesday</string>
+    <string name="t_thursday">Thursday</string>
+    <string name="t_friday">Friday</string>
+    <string name="t_saturday">Saturday</string>
+    <string name="b_apply">APPLY</string>
 </resources>
