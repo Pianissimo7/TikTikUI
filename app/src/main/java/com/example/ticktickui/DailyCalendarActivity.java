@@ -11,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.ticktickui.Client.Models.Lesson;
+import com.example.ticktickui.Client.SemiClient;
 import com.example.ticktickui.global_variables.GlobalVariables;
 
 import java.time.LocalDate;
@@ -28,7 +29,11 @@ public class DailyCalendarActivity extends AppCompatActivity
     private TextView dayOfWeekTV;
     private ListView hourListView;
     public static ArrayList<Lesson> lessons;
-    private static boolean refreshed = false;
+    private static boolean refreshed_lessons = false;
+    private static boolean refreshed_times = false;
+    private static LocalTime[] startTimes;
+    private static LocalTime[] endTimes;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -37,26 +42,44 @@ public class DailyCalendarActivity extends AppCompatActivity
         setContentView(R.layout.activity_daily_calendar);
         initWidgets();
         CalendarUtils.selectedDate = LocalDate.now();
-        Function<ArrayList<Lesson>, Integer> onSuccess = (lesons) ->
+        Function<ArrayList<Lesson>, Integer> onSuccess_lessons = (lesons) ->
         {
             this.lessons = lesons;
-            if(!refreshed)
-                this.recreate();
-            refreshed = true;
+            refreshed_lessons = true;
+            this.recreate();
             return 0;
         };
-        Function<Integer, Integer> onFailure = (t) ->
+        Function<Integer, Integer> onFailure_lessons = (t) ->
         {
-            Toast.makeText(getBaseContext(), "Couldn't make your request", Toast.LENGTH_LONG).show();
+            Toast.makeText(getBaseContext(), "Couldn't get lessons", Toast.LENGTH_LONG).show();
             return 0;
         };
-        if(!GlobalVariables.is_teacher)
-            GlobalVariables.client.GetLessonsByObj( GlobalVariables.teacher.id, true,
-                    onSuccess, onFailure);
-        else
+        Function<ArrayList<LocalTime[]>, Integer> onSuccess_times = (times) ->
         {
-            GlobalVariables.client.GetLessonsByObj(GlobalVariables.user_id, true,
-                    onSuccess, onFailure);
+            startTimes = times.get(0);
+            endTimes = times.get(1);
+            refreshed_times = true;
+            this.recreate();
+            return 0;
+        };
+        Function<Integer, Integer> onFailure_times = (t) ->
+        {
+            Toast.makeText(getBaseContext(), "Couldn't get times", Toast.LENGTH_LONG).show();
+            return 0;
+        };
+        if(!refreshed_lessons) {
+            if (!GlobalVariables.is_teacher)
+                GlobalVariables.client.GetLessonsByObj(GlobalVariables.teacher.id, true,
+                        onSuccess_lessons, onFailure_lessons);
+            else {
+                GlobalVariables.client.GetLessonsByObj(GlobalVariables.user_id, true,
+                        onSuccess_lessons, onFailure_lessons);
+            }
+        }
+        if(!refreshed_times)
+        {
+            SemiClient client = new SemiClient();
+            client.GetTeacherWorkTimes(0, true, onSuccess_times, onFailure_times);
         }
     }
 
@@ -71,7 +94,8 @@ public class DailyCalendarActivity extends AppCompatActivity
     protected void onResume()
     {
         super.onResume();
-        setDayView();
+        if(refreshed_times && refreshed_lessons)
+            setDayView();
     }
 
     private void setDayView()
@@ -91,8 +115,11 @@ public class DailyCalendarActivity extends AppCompatActivity
     private ArrayList<HourEvent> hourEventList()
     {
         ArrayList<HourEvent> list = new ArrayList<>();
-
-        for(int minutes = 0; minutes / 60 < 24; minutes += lesson_length)
+        int day = selectedDate.getDayOfWeek().getValue();
+        LocalTime start = startTimes[day];
+        LocalTime end = endTimes[day];
+        for(int minutes = start.getMinute() + start.getHour() * 60;
+            minutes < end.getMinute() + end.getHour() * 60; minutes += lesson_length)
         {
             LocalTime time = LocalTime.of(minutes / 60, minutes % 60);
             HourEvent hourEvent;
