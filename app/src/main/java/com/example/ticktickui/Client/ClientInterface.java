@@ -30,6 +30,9 @@ public interface ClientInterface {
     void GetLessonsByObj(int objId, boolean isTeacher,
                          Function<ArrayList<Lesson>, Integer> callbackSuccess,
                          Function<Integer, Integer> callbackFailure);
+    void GetNumberOfLessons(int studentId,
+                            Function<Integer, Integer> callbackSuccess,
+                            Function<Integer, Integer> callbackFailure);
     void GetTeachersByName(String name);
     void GetTeacherWorkTimes(int TeacherId,
                              Function<Schedule, Integer> callbackSuccess,
@@ -37,6 +40,9 @@ public interface ClientInterface {
     void UpdateTeacherWorkTimes(int TeacherId, Schedule schedule,
                                 Function<Integer, Integer> callbackSuccess,
                                 Function<Integer, Integer> callbackFailure);
+    void UpdateDetails(int id , boolean isTeacher, Object new_obj,
+                       Function<Integer, Integer> callbackSuccess,
+                       Function<Integer, Integer> callbackFailure);
 
 
 

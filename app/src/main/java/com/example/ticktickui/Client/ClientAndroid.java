@@ -9,6 +9,7 @@ import com.example.ticktickui.Client.Models.Schedule;
 import com.example.ticktickui.Client.Models.Teacher;
 import com.example.ticktickui.EventEditActivity;
 import com.example.ticktickui.global_variables.GlobalVariables;
+import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.loopj.android.http.*;
@@ -485,8 +486,52 @@ public class ClientAndroid implements ClientInterface{
 
         }
     }
+    public void UpdateDetails(int id , boolean isTeacher, Object new_obj,
+                              Function<Integer, Integer> callbackSuccess,
+                              Function<Integer, Integer> callbackFailure)
+    {
+        String URL = BASE_URL + (isTeacher ? "/Teacher/" : "/Student/") + id;
+        JsonObject obj = json_builder(new_obj);
+        try {
+            StringEntity entity = new StringEntity(obj.toString());
+            client.put(this.context, URL, entity, "application/json", new AsyncHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                    callbackSuccess.apply(0);
+                }
 
+                @Override
+                public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                    callbackFailure.apply(statusCode);
+                }
+            });
+        }
+        catch (Exception e)
+        {
 
+        }
+    }
+
+    public void GetNumberOfLessons(int studentId,
+                            Function<Integer, Integer> callbackSuccess,
+                            Function<Integer, Integer> callbackFailure)
+    {
+        String URL = BASE_URL + "/Lesson/AmountLessons" + studentId;
+        client.get(URL, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                GsonBuilder builder = new GsonBuilder();
+                int num_lessons = builder.create().fromJson(new String(responseBody, StandardCharsets.UTF_8), int.class);
+                callbackSuccess.apply(num_lessons);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                callbackFailure.apply(statusCode);
+            }
+        });
+
+    }
     private JsonObject json_builder(Object obj)
     {
         JsonObject jdata = new JsonObject();
