@@ -5,6 +5,7 @@ import android.app.Activity;
 
 import com.example.ticktickui.Client.ClientAndroid;
 import com.example.ticktickui.Client.Models.Teacher;
+import com.example.ticktickui.Client.SemiClient;
 
 public class GlobalVariables {
     /** USER PARAMETERS*/
@@ -15,7 +16,7 @@ public class GlobalVariables {
     public static boolean is_teacher = true;
     @SuppressLint("StaticFieldLeak")
     public static ClientAndroid client;
-
+    public static SemiClient semiClient = new SemiClient();
     public static Teacher teacher = null;
 
     public static void UpdateFields(String n , String p, String e, int u_id, boolean t)

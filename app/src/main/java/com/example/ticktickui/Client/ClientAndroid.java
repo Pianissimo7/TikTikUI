@@ -26,7 +26,7 @@ import java.util.function.Function;
 
 public class ClientAndroid implements ClientInterface{
     private static final AsyncHttpClient client = new AsyncHttpClient();
-    private static final String BASE_URL = "http://10.12.9.136:5000"; // Remember to update IP if changed...
+    private static final String BASE_URL = "http://10.0.0.17:5000"; // Remember to update IP if changed...
 //    private static String BASE_URL = "http://localhost:5231"; // Remember to update IP if changed...
     private static final String DEFAULT_ERR = "Something went wrong!";
     private static final String DEFAULT_EMAIL_PASS_ERR = "Email or password is not correct";
@@ -459,7 +459,7 @@ public class ClientAndroid implements ClientInterface{
 
     }
     @Override
-    public void UpdateTeacherWorkTimes(int id, LocalTime startTime, LocalTime endTime,
+    public void UpdateTeacherWorkTimes(int id, LocalTime[] startTime, LocalTime[] endTime,
                                 Function<Integer, Integer> callbackSuccess,
                                 Function<Integer, Integer> callbackFailure)
     {
