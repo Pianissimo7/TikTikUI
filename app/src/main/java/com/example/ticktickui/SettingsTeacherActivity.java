@@ -105,6 +105,8 @@ public class SettingsTeacherActivity extends AppCompatActivity {
         };
         Function<Integer, Integer> onFailure = (t) ->
         {
+
+            System.out.println(t + " fuck my life .dsa..dsa.d.as");
             Toast.makeText(this.getBaseContext(), "Failure", Toast.LENGTH_LONG);
             return 0;
         };

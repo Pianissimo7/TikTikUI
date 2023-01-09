@@ -464,6 +464,7 @@ public class ClientAndroid implements ClientInterface{
                                 Function<Integer, Integer> callbackSuccess,
                                 Function<Integer, Integer> callbackFailure)
     {
+        System.out.println(schedule.toString());
         String URL = BASE_URL + "/Schedule/" + TeacherId;
         //             client.post(this.context, URL, entity, "application/json", new AsyncHttpResponseHandler() {
         try {
@@ -475,7 +476,7 @@ public class ClientAndroid implements ClientInterface{
                 }
                 @Override
                 public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                    callbackFailure.apply(0);
+                    callbackFailure.apply(statusCode);
                 }
             });
         }

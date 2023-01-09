@@ -11,11 +11,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.ticktickui.Client.Models.Lesson;
+import com.example.ticktickui.Client.Models.Schedule;
 import com.example.ticktickui.Client.SemiClient;
 import com.example.ticktickui.global_variables.GlobalVariables;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.chrono.ChronoLocalDateTime;
 import java.time.format.TextStyle;
 import java.util.ArrayList;
 import java.util.Locale;
@@ -54,10 +56,10 @@ public class DailyCalendarActivity extends AppCompatActivity
             Toast.makeText(getBaseContext(), "Couldn't get lessons", Toast.LENGTH_LONG).show();
             return 0;
         };
-        Function<ArrayList<LocalTime[]>, Integer> onSuccess_times = (times) ->
+        Function<Schedule, Integer> onSuccess_times = (times) ->
         {
-            startTimes = times.get(0);
-            endTimes = times.get(1);
+            startTimes = times.start_times;
+            endTimes = times.end_times;
             refreshed_times = true;
             this.recreate();
             return 0;
@@ -67,19 +69,14 @@ public class DailyCalendarActivity extends AppCompatActivity
             Toast.makeText(getBaseContext(), "Couldn't get times", Toast.LENGTH_LONG).show();
             return 0;
         };
+        int id = GlobalVariables.is_teacher ? GlobalVariables.user_id : GlobalVariables.teacher.id;
         if(!refreshed_lessons) {
-            if (!GlobalVariables.is_teacher)
-                GlobalVariables.client.GetLessonsByObj(GlobalVariables.teacher.id, true,
-                        onSuccess_lessons, onFailure_lessons);
-            else {
-                GlobalVariables.client.GetLessonsByObj(GlobalVariables.user_id, true,
-                        onSuccess_lessons, onFailure_lessons);
-            }
+            GlobalVariables.client.GetLessonsByObj(id, true,
+                    onSuccess_lessons, onFailure_lessons);
         }
         if(!refreshed_times)
         {
-            SemiClient client = new SemiClient();
-            client.GetTeacherWorkTimes(0, true, onSuccess_times, onFailure_times);
+            GlobalVariables.client.GetTeacherWorkTimes(id, onSuccess_times, onFailure_times);
         }
     }
 
@@ -115,28 +112,36 @@ public class DailyCalendarActivity extends AppCompatActivity
     private ArrayList<HourEvent> hourEventList()
     {
         ArrayList<HourEvent> list = new ArrayList<>();
-        int day = selectedDate.getDayOfWeek().getValue();
-        LocalTime start = startTimes[day];
-        LocalTime end = endTimes[day];
-        for(int minutes = start.getMinute() + start.getHour() * 60;
-            minutes < end.getMinute() + end.getHour() * 60; minutes += lesson_length)
-        {
-            LocalTime time = LocalTime.of(minutes / 60, minutes % 60);
-            HourEvent hourEvent;
-            if(lessons != null)
+        int day = selectedDate.getDayOfWeek().getValue() % 7;
+        boolean is_selected_date_before_today = selectedDate.isBefore(LocalDate.now());
+        LocalTime start = is_selected_date_before_today ? LocalTime.of(0,0) : startTimes[day];
+        LocalTime end =  is_selected_date_before_today ? LocalTime.of(23,59) : endTimes[day];
+        if(is_selected_date_before_today) {
+            for(Lesson lesson : lessons)
             {
-                Optional<Lesson> optional = lessons.stream().filter((l) -> l.date.toLocalDate().equals(selectedDate)
-                        && l.date.toLocalTime().equals(time)).findFirst();
-                Lesson lesson = null;
-                if(optional.isPresent()) {
-                    lesson = optional.get();
+                if(lesson.date.toLocalDate().isEqual(selectedDate)) {
+                    list.add(new HourEvent(lesson.date.toLocalTime(), lesson));
                 }
-                hourEvent = new HourEvent(time, lesson);
-                list.add(hourEvent);
             }
-            else {
-                hourEvent = new HourEvent(time, null);
-                list.add(hourEvent);
+        }
+        else {
+            for (int minutes = start.getMinute() + start.getHour() * 60;
+                 minutes < end.getMinute() + end.getHour() * 60; minutes += lesson_length) {
+                LocalTime time = LocalTime.of(minutes / 60, minutes % 60);
+                HourEvent hourEvent;
+                if (lessons != null) {
+                    Optional<Lesson> optional = lessons.stream().filter((l) -> l.date.toLocalDate().equals(selectedDate)
+                            && l.date.toLocalTime().equals(time)).findFirst();
+                    Lesson lesson = null;
+                    if (optional.isPresent()) {
+                        lesson = optional.get();
+                    }
+                    hourEvent = new HourEvent(time, lesson);
+                    list.add(hourEvent);
+                } else {
+                    hourEvent = new HourEvent(time, null);
+                    list.add(hourEvent);
+                }
             }
         }
         return list;

@@ -2,6 +2,7 @@ package com.example.ticktickui.Client.Models;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 import java.time.LocalTime;
@@ -37,7 +38,17 @@ public class Schedule {
     }
     public String toString()
     {
-        Gson gson = new Gson();
-        return gson.toJson(this, Schedule.class);
+        JsonObject jdata = new JsonObject();
+        int num_weeks= 7;
+        JsonArray start_times_list =new JsonArray(num_weeks);
+        JsonArray end_times_list = new JsonArray(num_weeks);
+        for(int i =0; i< num_weeks; i++)
+        {
+            start_times_list.add(start_times[i].toString());
+            end_times_list.add(end_times[i].toString());
+        }
+        jdata.add("Starts", start_times_list);
+        jdata.add("Ends", end_times_list);
+        return jdata.toString();
     }
 }
