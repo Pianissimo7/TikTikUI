@@ -5,6 +5,7 @@ import android.widget.Toast;
 
 import com.example.ticktickui.Client.Models.Lesson;
 import com.example.ticktickui.Client.Models.Response;
+import com.example.ticktickui.Client.Models.Schedule;
 import com.example.ticktickui.Client.Models.Teacher;
 import com.example.ticktickui.EventEditActivity;
 import com.example.ticktickui.global_variables.GlobalVariables;
@@ -17,6 +18,7 @@ import cz.msebera.android.httpclient.Header;
 import cz.msebera.android.httpclient.entity.StringEntity;
 
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Array;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -438,35 +440,34 @@ public class ClientAndroid implements ClientInterface{
         });
     }
     @Override
-    public void GetTeacherWorkTimes(int id,
-                             Function<Integer, Integer> callbackSuccess,
+    public void GetTeacherWorkTimes(int TeacherId,
+                             Function<Schedule, Integer> callbackSuccess,
                              Function<Integer, Integer> callbackFailure)
     {
-        String URL = BASE_URL + "/WorkTimes/" + id;
+        String URL = BASE_URL + "/Schedule/" + TeacherId;
         client.get(URL, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                // TODO: IMPLEMENT ME
-                callbackSuccess.apply(0);
+                Schedule sched = Schedule.parser(new String(responseBody, StandardCharsets.UTF_8));
+                callbackSuccess.apply(sched);
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                // TODO: IMPLEMENT ME
                 callbackFailure.apply(0);
             }
         });
 
     }
     @Override
-    public void UpdateTeacherWorkTimes(int id, LocalTime[] startTime, LocalTime[] endTime,
+    public void UpdateTeacherWorkTimes(int TeacherId, Schedule schedule,
                                 Function<Integer, Integer> callbackSuccess,
                                 Function<Integer, Integer> callbackFailure)
     {
-        String URL = BASE_URL + "/WorkTimes/" + id + "/" + startTime.toString() + "/" + endTime.toString();
+        String URL = BASE_URL + "/Schedule/" + TeacherId;
         //             client.post(this.context, URL, entity, "application/json", new AsyncHttpResponseHandler() {
         try {
-            StringEntity entity = new StringEntity("");
+            StringEntity entity = new StringEntity(schedule.toString());
             client.post(this.context, URL, entity, "application/json", new AsyncHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {

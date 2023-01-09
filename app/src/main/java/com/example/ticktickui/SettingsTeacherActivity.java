@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.ticktickui.Client.Models.Schedule;
 import com.example.ticktickui.global_variables.GlobalVariables;
 
 import java.time.LocalTime;
@@ -42,6 +43,7 @@ public class SettingsTeacherActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings_teacher);
+
         Button btn_apply = findViewById(R.id.b_apply_settings);
         btn_apply.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -49,17 +51,17 @@ public class SettingsTeacherActivity extends AppCompatActivity {
                 apply();
             }
         });
-        Function<ArrayList<LocalTime[]>, Integer> onSuccess = (times) ->
+        Function<Schedule, Integer> onSuccess = (times) ->
         {
-            setTimes(times.get(0), times.get(1));
+            setTimes(times.start_times, times.end_times);
             return 0;
         };
         Function<Integer, Integer> onFailure = (t) ->
         {
-            Toast.makeText(this.getBaseContext(), "ur a failure", Toast.LENGTH_LONG);
+            Toast.makeText(this.getBaseContext(), "failed to get working hours", Toast.LENGTH_LONG);
             return 0;
         };
-        GlobalVariables.semiClient.GetTeacherWorkTimes(0, true, onSuccess, onFailure);
+        GlobalVariables.client.GetTeacherWorkTimes(GlobalVariables.user_id, onSuccess, onFailure);
     }
     private void setTimes(LocalTime[] start_times, LocalTime[] end_times)
     {
@@ -83,17 +85,16 @@ public class SettingsTeacherActivity extends AppCompatActivity {
     }
     public void apply() {
 
-        LocalTime[] start_times = new LocalTime[start_times_fields_ids.length];
-        LocalTime[] end_times = new LocalTime[end_times_fields_ids.length];
+        Schedule schedule = new Schedule();
         for (int i = 0; i < start_times_fields_ids.length ; i++) {
             EditText et = findViewById(start_times_fields_ids[i]);
             String time_string = et.getText().toString();
-            start_times[i] = getTime(time_string);
+            schedule.start_times[i] = getTime(time_string);
         }
         for (int i = 0; i < end_times_fields_ids.length ; i++) {
             EditText et = findViewById(end_times_fields_ids[i]);
             String time_string = et.getText().toString();
-            end_times[i] = getTime(time_string);
+            schedule.end_times[i] = getTime(time_string);
         }
         Function<Integer, Integer> onSuccess = (t) ->
         {
@@ -104,10 +105,10 @@ public class SettingsTeacherActivity extends AppCompatActivity {
         };
         Function<Integer, Integer> onFailure = (t) ->
         {
-            Toast.makeText(this.getBaseContext(), "fAiLure", Toast.LENGTH_LONG);
+            Toast.makeText(this.getBaseContext(), "Failure", Toast.LENGTH_LONG);
             return 0;
         };
-        GlobalVariables.semiClient.UpdateTeacherWorkTimes(0, true, start_times, end_times, onSuccess, onFailure);
+        GlobalVariables.client.UpdateTeacherWorkTimes(GlobalVariables.user_id, schedule, onSuccess, onFailure);
 
     }
 }
