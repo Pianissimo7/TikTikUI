@@ -36,4 +36,9 @@
     <string name="t_friday">Friday</string>
     <string name="t_saturday">Saturday</string>
     <string name="b_apply">APPLY</string>
+
+    <string name="t_email">email</string>
+    <string name="t_name">name</string>
+    <string name="t_phone">phone</string>
+    <string name="t_password">password</string>
 </resources>

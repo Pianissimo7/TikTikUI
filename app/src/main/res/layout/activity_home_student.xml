@@ -38,52 +38,75 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/t_name">
 
+<!--        <TableRow-->
+<!--            android:id="@+id/tableRow1"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="188dp"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/t_name">-->
+
+<!--            <Button-->
+<!--                android:id="@+id/b_calendar"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:background="@drawable/btn_custom"-->
+<!--                android:fontFamily="@font/roboto_regular"-->
+<!--                android:padding="5dp"-->
+<!--                android:text="Calender"-->
+<!--                android:textColor="@android:color/white"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toBottomOf="@+id/t_name"></Button>-->
+
+<!--            <Button-->
+<!--                android:id="@+id/b_my_teacher"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginStart="15dp"-->
+<!--                android:background="@drawable/btn_custom"-->
+<!--                android:padding="5dp"-->
+<!--                android:text="My Teacher"-->
+<!--                android:textAppearance="?android:attr/textAppearanceMedium"-->
+<!--                android:textColor="@android:color/white"-->
+<!--                app:layout_constraintStart_toEndOf="@+id/cell1"-->
+<!--                app:layout_constraintTop_toBottomOf="@+id/t_name"></Button>-->
+
+<!--            <Button-->
+<!--                android:id="@+id/b_teachers_list"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginStart="15dp"-->
+<!--                android:background="@drawable/btn_custom"-->
+<!--                android:padding="5dp"-->
+<!--                android:text="Teachers"-->
+<!--                android:textAppearance="?android:attr/textAppearanceMedium"-->
+<!--                android:textColor="@android:color/white"-->
+<!--                app:layout_constraintStart_toEndOf="@+id/cell1"-->
+<!--                app:layout_constraintTop_toBottomOf="@+id/t_name"></Button>-->
+
+<!--        </TableRow>-->
+
         <TableRow
-            android:id="@+id/tableRow1"
+            android:id="@+id/tableRow2"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/t_name">
+            app:layout_constraintTop_toBottomOf="@+id/tableRow1">
 
             <Button
-                android:id="@+id/b_calendar"
+                android:id="@+id/b_edit_details"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/btn_custom"
-                android:fontFamily="@font/roboto_regular"
-                android:padding="5dp"
-                android:text="Calender"
-                android:textColor="@android:color/white"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/t_name"></Button>
-
+                android:text="Button"
+                app:layout_constraintTop_toBottomOf="parent"></Button>
             <Button
-                android:id="@+id/b_my_teacher"
+                android:id="@+id/b_lesson_tracker"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
-                android:background="@drawable/btn_custom"
-                android:padding="5dp"
-                android:text="My Teacher"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@android:color/white"
-                app:layout_constraintStart_toEndOf="@+id/cell1"
-                app:layout_constraintTop_toBottomOf="@+id/t_name"></Button>
-
-            <Button
-                android:id="@+id/b_teachers_list"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
-                android:background="@drawable/btn_custom"
-                android:padding="5dp"
-                android:text="Teachers"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@android:color/white"
-                app:layout_constraintStart_toEndOf="@+id/cell1"
-                app:layout_constraintTop_toBottomOf="@+id/t_name"></Button>
-
+                android:text="Button"
+                app:layout_constraintTop_toBottomOf="parent"></Button>
         </TableRow>
     </TableLayout>
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
