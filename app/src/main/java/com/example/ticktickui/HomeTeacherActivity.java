@@ -43,6 +43,14 @@ public class HomeTeacherActivity extends AppCompatActivity {
                 switch_to_settings_activity();
             }
         });
+        // settings button functionality
+        Button btn_edit_details = findViewById(R.id.b_edit_details);
+        btn_edit_details.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switch_to_edit_details_activity();
+            }
+        });
     }
     public void switch_to_calendar_activity() {
         Intent calendar_activity = new Intent(this, DailyCalendarActivity.class);
@@ -55,5 +63,9 @@ public class HomeTeacherActivity extends AppCompatActivity {
     public void switch_to_settings_activity() {
         Intent settings_teacher_activity = new Intent(this, SettingsTeacherActivity.class);
         startActivity(settings_teacher_activity);
+    }
+    public void switch_to_edit_details_activity() {
+        Intent edit_details_activity = new Intent(this, EditDetailsActivity.class);
+        startActivity(edit_details_activity);
     }
 }
