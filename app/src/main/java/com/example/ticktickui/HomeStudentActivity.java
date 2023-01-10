@@ -17,6 +17,7 @@ import java.util.function.Function;
 
 public class HomeStudentActivity extends AppCompatActivity {
     Context c;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,6 +26,7 @@ public class HomeStudentActivity extends AppCompatActivity {
         c = this.getBaseContext();
         TextView t_name = findViewById(R.id.t_name);
         t_name.setText(GlobalVariables.name);
+
 
         // calendar button functionality
 //        Button btn_calendar = findViewById(R.id.b_calendar);
@@ -80,21 +82,38 @@ public class HomeStudentActivity extends AppCompatActivity {
                 switch_to_edit_details_activity();
             }
         });
+
+        Button btn_lesson_tracker = findViewById(R.id.b_lesson_tracker);
+        btn_lesson_tracker.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switch_to_lesson_tracker_activity();
+            }
+        });
     }
+
     public void switch_to_calendar_activity() {
         Intent calendar_activity = new Intent(this, DailyCalendarActivity.class);
         startActivity(calendar_activity);
     }
+
     public void switch_to_my_teacher_activity() {
         Intent my_teacher_activity = new Intent(this, MyTeacherActivity.class);
         startActivity(my_teacher_activity);
     }
+
     public void switch_to_teacher_list_activity() {
         Intent teacher_list_activity = new Intent(this, TeachersListActivity.class);
         startActivity(teacher_list_activity);
     }
+
     public void switch_to_edit_details_activity() {
         Intent edit_details_activity = new Intent(this, EditDetailsActivity.class);
         startActivity(edit_details_activity);
+    }
+
+    public void switch_to_lesson_tracker_activity() {
+        Intent lesson_tracker_activity = new Intent(this, LessonTrackerActivity.class);
+        startActivity(lesson_tracker_activity);
     }
 }

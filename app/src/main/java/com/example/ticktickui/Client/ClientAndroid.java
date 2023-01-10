@@ -492,6 +492,7 @@ public class ClientAndroid implements ClientInterface{
     {
         String URL = BASE_URL + (isTeacher ? "/Teacher/" : "/Student/") + id;
         JsonObject obj = json_builder(new_obj);
+        obj.addProperty("id", id);
         try {
             StringEntity entity = new StringEntity(obj.toString());
             client.put(this.context, URL, entity, "application/json", new AsyncHttpResponseHandler() {
@@ -516,7 +517,7 @@ public class ClientAndroid implements ClientInterface{
                             Function<Integer, Integer> callbackSuccess,
                             Function<Integer, Integer> callbackFailure)
     {
-        String URL = BASE_URL + "/Lesson/AmountLessons" + studentId;
+        String URL = BASE_URL + "/Lesson/AmountLessons/" + studentId;
         client.get(URL, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {

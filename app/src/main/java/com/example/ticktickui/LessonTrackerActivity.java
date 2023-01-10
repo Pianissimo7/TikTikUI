@@ -29,12 +29,12 @@ public class LessonTrackerActivity extends AppCompatActivity {
     private void update_tracker() {
         Function<Integer, Integer> onSuccess = (t) ->
         {
-            lesson_tracker.setText(t);
+            lesson_tracker.setText(String.valueOf(t));
             return 0;
         };
         Function<Integer, Integer> onFailure = (t) ->
         {
-            Toast.makeText(getBaseContext(), "Couldn't apply changes", Toast.LENGTH_LONG).show();
+            Toast.makeText(getBaseContext(), "Couldn't get lesson count " + t, Toast.LENGTH_LONG).show();
             return 0;
         };
         GlobalVariables.client.GetNumberOfLessons(GlobalVariables.user_id, onSuccess, onFailure);

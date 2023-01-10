@@ -36,7 +36,7 @@ public class EditDetailsActivity extends AppCompatActivity {
         apply.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                submit_details();
             }
         });
     }
@@ -61,7 +61,10 @@ public class EditDetailsActivity extends AppCompatActivity {
 
         Teacher teacher = GlobalVariables.is_teacher ? new Teacher(s_name, s_email, s_phone, s_password) : null;
         Student student = GlobalVariables.is_teacher ?  null : new Student(s_name, s_email, s_phone, s_password);
-
+        if(teacher != null)
+            teacher.id = GlobalVariables.user_id;
+        if(student != null)
+            student.id = GlobalVariables.user_id;
         return GlobalVariables.is_teacher ? teacher : student;
     }
     private void submit_details() {
@@ -72,7 +75,7 @@ public class EditDetailsActivity extends AppCompatActivity {
         };
         Function<Integer, Integer> onFailure = (t) ->
         {
-            Toast.makeText(getBaseContext(), "Couldn't apply changes", Toast.LENGTH_LONG).show();
+            Toast.makeText(getBaseContext(), "Couldn't apply changes " + t, Toast.LENGTH_LONG).show();
             return 0;
         };
         GlobalVariables.client.UpdateDetails(GlobalVariables.user_id, GlobalVariables.is_teacher, get_updated_user(), onSuccess, onFailure);
