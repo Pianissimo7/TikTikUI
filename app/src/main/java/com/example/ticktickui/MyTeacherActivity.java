@@ -21,15 +21,19 @@ public class MyTeacherActivity extends AppCompatActivity {
 
         TextView textView = findViewById(R.id.tv_teacher_details);
 
+        Button remove_teacher = findViewById(R.id.b_remove_teacher);
+
         if (GlobalVariables.teacher != null) {
+            remove_teacher.setVisibility(View.VISIBLE);
             String name = GlobalVariables.teacher.name;
             String email = GlobalVariables.teacher.email;
             String phone = GlobalVariables.teacher.phone;
             String details = name + "\nemail: " + email + "\nphone: " + phone;
             textView.setText(details);
         }
-
-        Button remove_teacher = findViewById(R.id.b_remove_teacher);
+        else {
+            remove_teacher.setVisibility(View.INVISIBLE);
+        }
         remove_teacher.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

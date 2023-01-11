@@ -137,7 +137,12 @@ public class DailyCalendarActivity extends AppCompatActivity
             for(Lesson lesson : lessons)
             {
                 if(lesson.date.toLocalDate().isEqual(selectedDate)) {
-                    list.add(lesson);
+                    if (GlobalVariables.is_teacher) {
+                        list.add(lesson);
+                    }
+                    else if (lesson.Student_id == GlobalVariables.user_id) {
+                        list.add(lesson);
+                    }
                 }
             }
         }

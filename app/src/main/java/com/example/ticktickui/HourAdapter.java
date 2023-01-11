@@ -82,6 +82,7 @@ public class HourAdapter extends ArrayAdapter<Lesson>
     {
         Button button =view.findViewById(R.id.button);
         button.setEnabled(true);
+
         if (lesson.Student_id != -1) {
             button.setText(R.string.lesson_set);
             if(!GlobalVariables.is_teacher) {
