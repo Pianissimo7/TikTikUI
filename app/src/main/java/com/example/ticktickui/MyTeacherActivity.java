@@ -44,6 +44,7 @@ public class MyTeacherActivity extends AppCompatActivity {
     private void disconnect_from_teacher() {
         Function<Integer, Integer> onSuccess = (teacher) ->
         {
+            GlobalVariables.teacher = null;
             Toast.makeText(this, "Success!", Toast.LENGTH_LONG).show();
             return 0;
         };
