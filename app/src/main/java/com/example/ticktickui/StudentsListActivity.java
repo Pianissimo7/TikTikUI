@@ -41,7 +41,7 @@ public class StudentsListActivity extends AppCompatActivity implements SearchVie
     public void setAdapter(ArrayList<Student> students)
     {
         ListView list = findViewById(R.id.lv_students_list);
-        adapter = new StudentsViewAdapter(this, students, LocalTime.now());
+        adapter = new StudentsViewAdapter(this, students, null);
         list.setAdapter(adapter);
     }
 

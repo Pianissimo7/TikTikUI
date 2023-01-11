@@ -24,7 +24,7 @@ public interface ClientInterface {
     void DeleteLesson(int LessonId, Function<Integer, Integer> callbackSuccess, Function<Integer, Integer> callbackFailure);
     // TODO Get Number of Lessons completed so far **********
     void ConnectStudentToTeacher(int StudentId, int TeacherId, Function<Integer, Integer> callbackSuccess, Function<Integer, Integer> callbackFailure);
-    void DeleteConnection(int StudentId);
+    void DeleteConnection(int StudentId, Function<Integer,Integer> callbackSuccess, Function<Integer,Integer> callbackFailure);
     void GetStudentsByTeacher(int TeacherId, Function<ArrayList<Student>, Integer> callbackSuccess, Function<Integer, Integer> callbackFailure);
     void GetTeacherByStudent(int StudentId, Function<Teacher, Integer> callbackSuccess, Function<Integer, Integer> callbackFail);
     void GetLessonsByObj(int objId, boolean isTeacher,

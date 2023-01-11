@@ -51,18 +51,20 @@ public class HomeStudentActivity extends AppCompatActivity {
                 Function<Teacher, Integer> onSuccess = (teacher) ->
                 {
                     GlobalVariables.teacher = teacher;
-                    if(teacher != null)
-                        switch_to_my_teacher_activity();
-                    else
-                        Toast.makeText(c, "Please register to teacher.", Toast.LENGTH_LONG).show();
+                    switch_to_my_teacher_activity();
                     return 0;
                 };
                 Function<Integer, Integer> onFailure = (t) ->
                 {
-                    Toast.makeText(c, "Failed to connect", Toast.LENGTH_LONG).show();
+                    if (t == 404) {
+                        switch_to_my_teacher_activity();
+                    }
+                    else {
+                        Toast.makeText(c, "Failed to connect", Toast.LENGTH_LONG).show();
+                    }
                     return 0;
                 };
-                GlobalVariables.client.GetTeacherByStudent(GlobalVariables.user_id,onSuccess, onFailure);
+                GlobalVariables.client.GetTeacherByStudent(GlobalVariables.user_id, onSuccess, onFailure);
             }
         });
         // teachers list button functionality

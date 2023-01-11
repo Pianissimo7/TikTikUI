@@ -1,19 +1,25 @@
 package com.example.ticktickui;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.ticktickui.Client.Models.Student;
+import com.example.ticktickui.Client.Models.Teacher;
+import com.example.ticktickui.global_variables.GlobalVariables;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.function.Function;
 
 public class StudentsViewAdapter extends BaseAdapter {
 
@@ -69,21 +75,74 @@ public class StudentsViewAdapter extends BaseAdapter {
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setEditPage(Students.get(position).id, Students.get(position).name);
+                if (time == null) {
+                    setStudentInfoPage(position);
+                }
+                else {
+                    setEditPage(position);
+                }
             }
         });
         return view;
     }
-    private void setEditPage(int student_id, String student_name)
-    {
+    private void setStudentInfoPage(int position) {
+
+        Student s = Students.get(position);
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                c);
+
+        View promptsView = inflater.inflate(R.layout.activity_student_info, null);
+
+        alertDialogBuilder.setView(promptsView);
+
+        String student_info = "";
+        student_info += "name: " + s.name + "\n";
+        student_info += "email: " + s.email + "\n";
+        student_info += "phone: " + s.phone;
+
+        alertDialogBuilder.setMessage(student_info + "\n\n" + "Would you like \nto remove the student?");
+
+        alertDialogBuilder
+                .setCancelable(true)
+                .setPositiveButton("Remove Student",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,int id) {
+                                remove_student(s.id);
+                            }
+                        })
+                .setNegativeButton("Cancel",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,int id) {
+                                dialog.cancel();
+                            }
+                        });
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+
+        alertDialog.show();
+    }
+    private void remove_student(int id) {
+        Function<Integer, Integer> onSuccess = (teacher) ->
+        {
+            Toast.makeText(c, "Success!", Toast.LENGTH_LONG).show();
+            return 0;
+        };
+        Function<Integer, Integer> onFailure = (t) ->
+        {
+            Toast.makeText(c, "Failed to remove the student", Toast.LENGTH_LONG).show();
+            return 0;
+        };
+        GlobalVariables.client.DeleteConnection(id, onSuccess, onFailure);
+    }
+    private void setEditPage(int position) {
         Intent intent = new Intent(c, EventEditActivity.class);
         intent.putExtra("hour", time.getHour());
         intent.putExtra("minute", time.getMinute());
-        intent.putExtra("student_id", student_id);
-        intent.putExtra("student_name", student_name);
+        intent.putExtra("student_id", Students.get(position).id);
+        intent.putExtra("student_name", Students.get(position).name);
         c.startActivity(intent);
     }
-    // Filter Class
     public void filter(String charText) {
         charText = charText.toLowerCase(Locale.getDefault());
         Students.clear();

@@ -7,6 +7,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
+
+import com.example.ticktickui.global_variables.GlobalVariables;
 
 public class HomeTeacherActivity extends AppCompatActivity {
 
@@ -15,6 +18,9 @@ public class HomeTeacherActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_teacher);
+
+        TextView t_name = findViewById(R.id.t_name);
+        t_name.setText(GlobalVariables.name);
 
         // calendar button functionality
         Button btn_calendar = findViewById(R.id.b_calendar);

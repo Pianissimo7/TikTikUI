@@ -29,7 +29,7 @@ import java.util.function.Function;
 
 public class ClientAndroid implements ClientInterface{
     private static final AsyncHttpClient client = new AsyncHttpClient();
-    private static final String BASE_URL = "http://10.0.0.17:5000"; // Remember to update IP if changed...
+    private static final String BASE_URL = "http://10.12.10.15:5000"; // Remember to update IP if changed...
 //    private static String BASE_URL = "http://localhost:5231"; // Remember to update IP if changed...
     private static final String DEFAULT_ERR = "Something went wrong!";
     private static final String DEFAULT_EMAIL_PASS_ERR = "Email or password is not correct";
@@ -89,7 +89,6 @@ public class ClientAndroid implements ClientInterface{
 
                 @Override
                 public void onFailure(int i, Header[] headers, byte[] bytes, Throwable throwable) {
-                    System.out.println(new String(bytes, StandardCharsets.UTF_8));
                     if(bytes != null && i == 404)
                         callbackFailure.apply(DEFAULT_EMAIL_PASS_ERR);
                     else
@@ -328,21 +327,17 @@ public class ClientAndroid implements ClientInterface{
     }
 
     @Override
-    public void DeleteConnection(int StudentId) {
+    public void DeleteConnection(int StudentId, Function<Integer,Integer> callbackSuccess, Function<Integer,Integer> callbackFailure) {
         String URL = BASE_URL + "/Student/DeleteTeacher/" + StudentId;
         client.delete(URL, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                // TODO implement me
-                System.out.println("Success");
-                System.out.println(new String(responseBody, StandardCharsets.UTF_8));
+                callbackSuccess.apply(0);
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                // TODO implement me
-                System.out.println("Failed");
-                System.out.println(new String(responseBody, StandardCharsets.UTF_8));
+                callbackSuccess.apply(-1);
             }
         });
     }
@@ -382,7 +377,7 @@ public class ClientAndroid implements ClientInterface{
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                callbackFail.apply(0);
+                callbackFail.apply(statusCode);
             }
         });
     }
