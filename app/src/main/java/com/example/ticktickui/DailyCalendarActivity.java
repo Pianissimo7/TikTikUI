@@ -114,9 +114,17 @@ public class DailyCalendarActivity extends AppCompatActivity
         ArrayList<HourEvent> list = new ArrayList<>();
         int day = selectedDate.getDayOfWeek().getValue() % 7;
         boolean is_selected_date_before_today = selectedDate.isBefore(LocalDate.now());
-        LocalTime start = is_selected_date_before_today ? LocalTime.of(0,0) : startTimes[day];
-        LocalTime end =  is_selected_date_before_today ? LocalTime.of(23,59) : endTimes[day];
-        if(is_selected_date_before_today) {
+        boolean is_selected_date_before_tomorrow = selectedDate.isBefore(LocalDate.now().plusDays(1));
+        LocalTime start, end;
+        if (GlobalVariables.is_teacher) {
+            start = is_selected_date_before_today ? LocalTime.of(0, 0) : startTimes[day];
+            end = is_selected_date_before_today ? LocalTime.of(23, 59) : endTimes[day];
+        }
+        else {
+            start = is_selected_date_before_tomorrow ? LocalTime.of(0, 0) : startTimes[day];
+            end = is_selected_date_before_tomorrow ? LocalTime.of(23, 59) : endTimes[day];
+        }
+        if((GlobalVariables.is_teacher) ? is_selected_date_before_today : is_selected_date_before_tomorrow) {
             for(Lesson lesson : lessons)
             {
                 if(lesson.date.toLocalDate().isEqual(selectedDate)) {
@@ -138,7 +146,8 @@ public class DailyCalendarActivity extends AppCompatActivity
                     }
                     hourEvent = new HourEvent(time, lesson);
                     list.add(hourEvent);
-                } else {
+                }
+                else {
                     hourEvent = new HourEvent(time, null);
                     list.add(hourEvent);
                 }

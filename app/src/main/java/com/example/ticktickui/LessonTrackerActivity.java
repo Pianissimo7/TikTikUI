@@ -22,9 +22,8 @@ public class LessonTrackerActivity extends AppCompatActivity {
         initWidgets();
         update_tracker();
     }
-    private void initWidgets()
-    {
-     lesson_tracker = findViewById(R.id.t_lesson_tracker);
+    private void initWidgets() {
+        lesson_tracker = findViewById(R.id.t_lesson_tracker);
     }
     private void update_tracker() {
         Function<Integer, Integer> onSuccess = (t) ->

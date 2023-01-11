@@ -31,17 +31,19 @@
     <TableLayout
         android:id="@+id/tabla_cuerpo"
         android:layout_width="wrap_content"
-        android:layout_height="48dp"
+        android:layout_height="0dp"
         android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
         android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/t_name">
 
         <TableRow
             android:id="@+id/tableRow1"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/t_name">
 
@@ -59,13 +61,13 @@
                 app:layout_constraintTop_toBottomOf="@+id/t_name"></Button>
 
             <Button
-                android:id="@+id/b_teachers_list"
+                android:id="@+id/b_students_list"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="15dp"
                 android:background="@drawable/btn_custom"
                 android:padding="5dp"
-                android:text="Students"
+                android:text="My Students"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="@android:color/white"
                 app:layout_constraintStart_toEndOf="@+id/cell1"
@@ -86,16 +88,30 @@
                 app:layout_constraintTop_toBottomOf="@+id/t_name"></Button>
 
         </TableRow>
-    </TableLayout>
 
-    <Button
-        android:id="@+id/b_edit_details"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="10dp"
-        android:text="Edit Details"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tabla_cuerpo" />
+        <TableRow
+            android:id="@+id/tableRow2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/t_name">
+            >
+
+            <Button
+                android:id="@+id/b_edit_details"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/btn_custom"
+                android:fontFamily="@font/roboto_regular"
+                android:padding="5dp"
+                android:text="Edit Details"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@android:color/white"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tableRow1" />
+
+        </TableRow>
+    </TableLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

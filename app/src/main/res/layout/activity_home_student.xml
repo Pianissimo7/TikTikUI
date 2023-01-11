@@ -31,17 +31,17 @@
     <TableLayout
         android:id="@+id/tabla_cuerpo"
         android:layout_width="wrap_content"
-        android:layout_height="48dp"
-        android:layout_marginStart="20dp"
+        android:layout_height="0dp"
         android:layout_marginTop="20dp"
         android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/t_name">
 
         <TableRow
             android:id="@+id/tableRow1"
             android:layout_width="match_parent"
-            android:layout_height="188dp"
+            android:layout_height="0dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/t_name">
 
@@ -73,7 +73,7 @@
             <Button
                 android:id="@+id/b_teachers_list"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginStart="15dp"
                 android:background="@drawable/btn_custom"
                 android:padding="5dp"
@@ -84,29 +84,42 @@
                 app:layout_constraintTop_toBottomOf="@+id/t_name"></Button>
 
         </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow2"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/t_name">
+
+            <Button
+                android:id="@+id/b_edit_details"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/btn_custom"
+                android:padding="5dp"
+                android:text="Edit Details"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@android:color/white"
+                app:layout_constraintStart_toEndOf="@+id/cell1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tableRow1"></Button>
+
+            <Button
+                android:id="@+id/b_lesson_tracker"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/btn_custom"
+                android:padding="5dp"
+                android:text="Lesson Tracker"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@android:color/white"
+                app:layout_constraintStart_toEndOf="@+id/b_edit_details"
+                app:layout_constraintTop_toBottomOf="@+id/tableRow1"></Button>
+        </TableRow>
     </TableLayout>
-
-    <Button
-        android:id="@+id/b_edit_details"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="10dp"
-        android:text="Edit Details"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tabla_cuerpo"></Button>
-
-    <Button
-        android:id="@+id/b_lesson_tracker"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="10dp"
-        android:text="Lesson Tracker"
-        app:layout_constraintStart_toEndOf="@+id/b_edit_details"
-        app:layout_constraintTop_toBottomOf="@+id/tabla_cuerpo"></Button>
-
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

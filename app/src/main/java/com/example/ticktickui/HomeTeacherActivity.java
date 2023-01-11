@@ -32,8 +32,7 @@ public class HomeTeacherActivity extends AppCompatActivity {
         });
 
         // students list button functionality
-        Button btn_students_list = findViewById(R.id.b_teachers_list);
-        btn_students_list.setText("My Students");
+        Button btn_students_list = findViewById(R.id.b_students_list);
         btn_students_list.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
