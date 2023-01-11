@@ -36,7 +36,6 @@ public class StudentsListActivity extends AppCompatActivity implements SearchVie
         GlobalVariables.client.GetStudentsByTeacher(GlobalVariables.user_id, onSuccess,onFailure);
         SearchView search_bar = findViewById(R.id.sv_search_student);
         search_bar.setOnQueryTextListener(this);
-
     }
     public void setAdapter(ArrayList<Student> students)
     {
@@ -52,7 +51,9 @@ public class StudentsListActivity extends AppCompatActivity implements SearchVie
 
     @Override
     public boolean onQueryTextChange(String newText) {
-        adapter.filter(newText);
+        if (adapter != null) {
+            adapter.filter(newText);
+        }
         return false;
     }
 }

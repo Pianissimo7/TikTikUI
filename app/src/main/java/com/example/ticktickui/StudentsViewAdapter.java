@@ -109,6 +109,7 @@ public class StudentsViewAdapter extends BaseAdapter {
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog,int id) {
                                 remove_student(s.id);
+
                             }
                         })
                 .setNegativeButton("Cancel",
@@ -126,6 +127,7 @@ public class StudentsViewAdapter extends BaseAdapter {
         Function<Integer, Integer> onSuccess = (teacher) ->
         {
             Toast.makeText(c, "Success!", Toast.LENGTH_LONG).show();
+            this.notifyDataSetChanged();
             return 0;
         };
         Function<Integer, Integer> onFailure = (t) ->

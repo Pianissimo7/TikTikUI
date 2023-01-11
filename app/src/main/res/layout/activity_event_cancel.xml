@@ -64,14 +64,14 @@
 
     <Button
         android:id="@+id/b_submit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="200dp"
+        android:layout_height="75dp"
         android:layout_gravity="center"
-        android:layout_marginTop="20dp"
-        android:background="@null"
+        android:layout_marginTop="80dp"
+        android:background="@drawable/btn_custom_red"
         android:onClick="saveEventAction"
         android:text="@string/cancel_lesson"
-        android:textColor="@color/blue"
+        android:textColor="@color/white"
         android:textSize="20sp"
         android:textStyle="bold" />
 
