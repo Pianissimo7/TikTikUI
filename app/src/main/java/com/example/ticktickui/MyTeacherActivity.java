@@ -46,6 +46,7 @@ public class MyTeacherActivity extends AppCompatActivity {
         {
             GlobalVariables.teacher = null;
             Toast.makeText(this, "Success!", Toast.LENGTH_LONG).show();
+            recreate();
             return 0;
         };
         Function<Integer, Integer> onFailure = (t) ->
