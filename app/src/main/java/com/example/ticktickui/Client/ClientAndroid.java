@@ -206,6 +206,8 @@ public class ClientAndroid implements ClientInterface{
             client.post(this.context, BASE_URL + "/Lesson", entity, "application/json", new AsyncHttpResponseHandler() {
                 @Override
                 public void onSuccess(int i, Header[] headers, byte[] bytes) {
+                    GsonBuilder builder = new GsonBuilder();
+                    lesson.id = builder.create().fromJson(new String(bytes, StandardCharsets.UTF_8), int.class);
                     activity.setLesson(lesson);
                 }
 
@@ -299,7 +301,7 @@ public class ClientAndroid implements ClientInterface{
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                 System.out.println("Failed in Delete lesson, error message: " + statusCode + " " + LessonId);
-                callbackFailure.apply(0);
+                callbackFailure.apply(statusCode);
             }
         });
     }

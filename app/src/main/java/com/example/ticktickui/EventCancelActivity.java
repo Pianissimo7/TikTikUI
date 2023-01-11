@@ -55,6 +55,7 @@ public class EventCancelActivity extends AppCompatActivity {
                 Function<Integer, Integer> onFailure = (t) ->
                 {
                     Toast.makeText(getBaseContext(), "Couldn't make your request", Toast.LENGTH_LONG).show();
+                    System.out.println(t);
                     finish();
                     return 0;
                 };
