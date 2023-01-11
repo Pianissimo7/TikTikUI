@@ -1,7 +1,13 @@
 package com.example.ticktickui;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,6 +50,7 @@ public class LoginFragment extends Fragment {
                 login(email, password);
             }
         });
+
         // Inflate the layout for this fragment
         return view;
     }
