@@ -9,6 +9,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.ticktickui.Client.Models.Lesson;
+import com.example.ticktickui.Client.Models.Student;
 import com.example.ticktickui.global_variables.GlobalVariables;
 
 import java.time.LocalTime;
@@ -36,7 +37,25 @@ public class EventCancelActivity extends AppCompatActivity {
                 time.equals(l.date.toLocalTime())).findFirst();
         opt.ifPresent(lesson -> lesson_to_remove = lesson);
 
-        Name.setText(GlobalVariables.name);
+
+
+
+        Function<Student, Integer> onSuccess = (s) ->
+        {
+            Name.setText(s.name);
+            return 0;
+        };
+        Function<Integer, Integer> onFailure = (t) ->
+        {
+            Toast.makeText(getBaseContext(), "Couldn't get student name", Toast.LENGTH_LONG).show();
+            finish();
+            return 0;
+        };
+        GlobalVariables.client.GetStudentById(lesson_to_remove.Student_id , onSuccess, onFailure);
+
+
+
+
         Date.setText(new String("Date: " + lesson_to_remove.date.toLocalDate()));
         Time.setText(new String("Time: " + lesson_to_remove.date.toLocalTime()));
         Place.setText(new String("at: " + lesson_to_remove.Comment));
@@ -55,7 +74,6 @@ public class EventCancelActivity extends AppCompatActivity {
                 Function<Integer, Integer> onFailure = (t) ->
                 {
                     Toast.makeText(getBaseContext(), "Couldn't make your request", Toast.LENGTH_LONG).show();
-                    System.out.println(t);
                     finish();
                     return 0;
                 };
