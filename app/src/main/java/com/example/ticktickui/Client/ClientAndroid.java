@@ -167,7 +167,9 @@ public class ClientAndroid implements ClientInterface{
             client.post(this.context, URL, entity, "application/json", new AsyncHttpResponseHandler() {
                 @Override
                 public void onSuccess(int i, Header[] headers, byte[] bytes) {
-                    callbackSuccess.apply(0);
+                    GsonBuilder builder = new GsonBuilder();
+                    int user_id = builder.create().fromJson(new String(bytes, StandardCharsets.UTF_8), int.class);
+                    callbackSuccess.apply(user_id);
                 }
 
                 @Override

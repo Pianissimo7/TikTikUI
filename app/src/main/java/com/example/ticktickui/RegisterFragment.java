@@ -3,6 +3,8 @@ package com.example.ticktickui;
 import android.content.Intent;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
+
+import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -77,8 +79,9 @@ public class RegisterFragment extends Fragment {
             if(isTeacher)
             {
                 Teacher teach = new Teacher(name, email, phone, password);
-                Function<Integer, Integer> onSuccess = (t)->
+                Function<Integer, Integer> onSuccess = (id)->
                 {
+                    GlobalVariables.user_id = id;
                     Intent intent = new Intent(this.getActivity(), HomeTeacherActivity.class);
                     startActivity(intent);
                     return 0;
@@ -88,8 +91,9 @@ public class RegisterFragment extends Fragment {
             else
             {
                 Student student = new Student(name, email, phone, password);
-                Function<Integer, Integer> onSuccess = (t) ->
+                Function<Integer, Integer> onSuccess = (id) ->
                 {
+                    GlobalVariables.user_id = id;
                     Intent intent = new Intent(this.getActivity(), HomeStudentActivity.class);
                     startActivity(intent);
                     return 0;
