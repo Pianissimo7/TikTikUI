@@ -16,6 +16,7 @@ import com.example.ticktickui.Client.SemiClient;
 import com.example.ticktickui.global_variables.GlobalVariables;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.chrono.ChronoLocalDateTime;
 import java.time.format.TextStyle;
@@ -88,11 +89,20 @@ public class DailyCalendarActivity extends AppCompatActivity
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        if (isFinishing()) {
+            refreshed_lessons = false;
+            refreshed_times = false;
+        }
+    }
+    @Override
     protected void onResume()
     {
         super.onResume();
         if(refreshed_times && refreshed_lessons)
             setDayView();
+
     }
 
     private void setDayView()
@@ -105,13 +115,12 @@ public class DailyCalendarActivity extends AppCompatActivity
 
     private void setHourAdapter()
     {
-        HourAdapter hourAdapter = new HourAdapter(getApplicationContext(), hourEventList());
+        HourAdapter hourAdapter = new HourAdapter(getApplicationContext(), LessonsList());
         hourListView.setAdapter(hourAdapter);
     }
 
-    private ArrayList<HourEvent> hourEventList()
-    {
-        ArrayList<HourEvent> list = new ArrayList<>();
+    private ArrayList<Lesson> LessonsList() {
+        ArrayList<Lesson> list = new ArrayList<>();
         int day = selectedDate.getDayOfWeek().getValue() % 7;
         boolean is_selected_date_before_today = selectedDate.isBefore(LocalDate.now());
         boolean is_selected_date_before_tomorrow = selectedDate.isBefore(LocalDate.now().plusDays(1));
@@ -128,15 +137,13 @@ public class DailyCalendarActivity extends AppCompatActivity
             for(Lesson lesson : lessons)
             {
                 if(lesson.date.toLocalDate().isEqual(selectedDate)) {
-                    list.add(new HourEvent(lesson.date.toLocalTime(), lesson));
+                    list.add(lesson);
                 }
             }
         }
         else {
-            for (int minutes = start.getMinute() + start.getHour() * 60;
-                 minutes < end.getMinute() + end.getHour() * 60; minutes += lesson_length) {
+            for (int minutes = start.getMinute() + start.getHour() * 60; minutes < end.getMinute() + end.getHour() * 60; minutes += lesson_length) {
                 LocalTime time = LocalTime.of(minutes / 60, minutes % 60);
-                HourEvent hourEvent;
                 if (lessons != null) {
                     Optional<Lesson> optional = lessons.stream().filter((l) -> l.date.toLocalDate().equals(selectedDate)
                             && l.date.toLocalTime().equals(time)).findFirst();
@@ -144,12 +151,13 @@ public class DailyCalendarActivity extends AppCompatActivity
                     if (optional.isPresent()) {
                         lesson = optional.get();
                     }
-                    hourEvent = new HourEvent(time, lesson);
-                    list.add(hourEvent);
+                    if (lesson == null) {
+                        lesson = new Lesson(-1, -1, LocalDateTime.of(selectedDate, time), "");
+                    }
+                    list.add(lesson);
                 }
                 else {
-                    hourEvent = new HourEvent(time, null);
-                    list.add(hourEvent);
+                    list.add(new Lesson(-1, -1, LocalDateTime.of(selectedDate, time), ""));
                 }
             }
         }

@@ -109,7 +109,8 @@ public class StudentsViewAdapter extends BaseAdapter {
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog,int id) {
                                 remove_student(s.id);
-
+                                Students.remove(s);
+                                notifyDataSetChanged();
                             }
                         })
                 .setNegativeButton("Cancel",

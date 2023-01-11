@@ -7,16 +7,20 @@
     <TextView
         android:id="@+id/t_name"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_toRightOf="@+id/t_name"
         android:text="Test Text"
+        android:layout_weight="1"
         android:textSize="30sp" />
 
     <Button
         android:id="@+id/b_sign_to_teacher"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="Button" />
+        android:layout_width="150dp"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="15dp"
+        android:background="@drawable/btn_custom"
+        android:fontFamily="@font/roboto_regular"
+        android:text="Button"
+        android:textColor="@android:color/white" />
 
 </LinearLayout>

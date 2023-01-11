@@ -19,6 +19,7 @@
 
     <string name="order_lesson">Order a lesson</string>
     <string name="lesson_set">lesson set!</string>
+    <string name="lesson_passed">lesson passed</string>
     <string name="cancel_lesson">Cancel Lesson</string>
     <string name="cancel_lesson_confirmation">are you sure you want to cancel the lesson:</string>
     <string name="no_teacher_text">You are not currently signed to any teachers</string>
@@ -41,4 +42,6 @@
     <string name="t_name">name</string>
     <string name="t_phone">phone</string>
     <string name="t_password">password</string>
+
+
 </resources>
