@@ -144,6 +144,24 @@ public class ClientAndroid implements ClientInterface{
 
         }
     }
+    public void GetStudentById(int id,
+                        Function<Integer, Integer> callbackSuccess,
+                        Function<Integer, Integer> callbackFailure)
+    {
+        String URL = BASE_URL + "/Student/" + id;
+        client.get(URL, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                callbackSuccess.apply(0);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                callbackFailure.apply(statusCode);
+            }
+        });
+
+    }
     /**
      * This is generally used when an user registers to the system,
      * to update the server and then to save him to the db if his information is valid
@@ -341,7 +359,7 @@ public class ClientAndroid implements ClientInterface{
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                callbackSuccess.apply(-1);
+                callbackFailure.apply(statusCode);
             }
         });
     }

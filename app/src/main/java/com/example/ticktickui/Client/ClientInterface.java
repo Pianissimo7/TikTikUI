@@ -34,6 +34,9 @@ public interface ClientInterface {
                             Function<Integer, Integer> callbackSuccess,
                             Function<Integer, Integer> callbackFailure);
     void GetTeachersByName(String name);
+    void GetStudentById(int id,
+                        Function<Integer, Integer> callbackSuccess,
+                        Function<Integer, Integer> callbackFailure);
     void GetTeacherWorkTimes(int TeacherId,
                              Function<Schedule, Integer> callbackSuccess,
                              Function<Integer, Integer> callbackFailure);
