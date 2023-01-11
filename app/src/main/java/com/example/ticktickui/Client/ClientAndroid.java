@@ -145,14 +145,16 @@ public class ClientAndroid implements ClientInterface{
         }
     }
     public void GetStudentById(int id,
-                        Function<Integer, Integer> callbackSuccess,
+                        Function<Student, Integer> callbackSuccess,
                         Function<Integer, Integer> callbackFailure)
     {
         String URL = BASE_URL + "/Student/" + id;
         client.get(URL, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                callbackSuccess.apply(0);
+                GsonBuilder builder = new GsonBuilder();
+                Student returned_student = builder.create().fromJson(new String(responseBody, StandardCharsets.UTF_8), Student.class);
+                callbackSuccess.apply(returned_student);
             }
 
             @Override
