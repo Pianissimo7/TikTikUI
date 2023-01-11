@@ -100,9 +100,11 @@ public class HourAdapter extends ArrayAdapter<Lesson>
             }
             boolean invalid_set_lesson_time = (GlobalVariables.is_teacher) ? selectedDate.isBefore(LocalDate.now()) : selectedDate.isBefore(LocalDate.now().plusDays(1));
             if (invalid_set_lesson_time) {
-                button.setBackground(getDrawable(c, R.drawable.btn_custom_lesson_passed));
-                button.setText(R.string.lesson_passed);
-                button.setEnabled(false);
+                if (GlobalVariables.is_teacher || lesson.Student_id == GlobalVariables.user_id) {
+                    button.setBackground(getDrawable(c, R.drawable.btn_custom_lesson_passed));
+                    button.setText(R.string.lesson_passed);
+                    button.setEnabled(false);
+                }
             }
 
         }
